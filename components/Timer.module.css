@@ -1,0 +1,25 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900&display=swap");
+
+.circleZone {
+  margin-top: 5%;
+  margin-left: 300px;
+  width: 1000px;
+  height: 1000px;
+}
+
+
+.box .percent svg circle {
+  fill: none;
+  stroke-width: 10;
+  stroke: #000;
+  transform: translate(5px, 5px);
+ 
+}
+.box .percent svg circle:nth-child(1) {
+  stroke-dashoffset: 0;
+  stroke-dasharray: 100;
+  stroke: #871b28;
+}
+.box .percent svg circle:nth-child(2) {
+  stroke: #f3f3f3;
+}
