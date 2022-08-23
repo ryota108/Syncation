@@ -3,14 +3,12 @@ import React,{useState} from 'react';
 import classes from "./Timer.module.css";
 
 
-function Timer() {
+function Timer({onHelp}) {
 
   const [timer, setTimer] = useState("")
-  const [startTime, setStartTime] = useState("");
-  const time = 500;
-  let barFill = "0%";
-  barFill = Math.round((time / 1.7) * 100) + "%";
+  const [startTime, setStartTime] = useState(new Date());
 
+  
   const clickHandler = (e) => {
     if (timer === ""){
       return
@@ -26,14 +24,11 @@ function Timer() {
     const result = new Date (min)
     console.log(result, startTime)
     // 開始時間
+    
     const diff = result.getTime() - startTime.getTime();
-    const calcHour = Math.floor(diff / 1000 / 60 / 60);
-    const calcMin = Math.floor(diff / 1000 / 60) % 60;
-    const calcSec = Math.floor(diff / 1000) % 60;
 
-    console.log(`${calcHour}:${calcMin}`);
-    // const result = new Date(min);
-    // console.log(result);
+    // console.log(`${calcMin}`);
+    onHelp(min)
   }
 
   //  開始時間と終了時間を基にタイマー作成
