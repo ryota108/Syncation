@@ -1,0 +1,14 @@
+.box {
+  position: absolute;
+  width: 100vw;
+  display: flex;
+  justify-content: space-between;
+}
+
+.top {
+  top:0
+}
+
+.bottom {
+  bottom: 0;
+}

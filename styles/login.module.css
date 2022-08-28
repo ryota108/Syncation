@@ -1,0 +1,9 @@
+.loginModal {
+  display: flex;
+  flex-direction: column;
+}
+
+.loginInput {
+  width: 20%;
+  margin: auto;
+}

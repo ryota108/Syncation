@@ -1,12 +1,19 @@
 import { type } from 'os';
 import React,{useState} from 'react';
 import classes from "./Timer.module.css";
+import { useRecoilValue } from "recoil";
+import {hostState} from "../recoil/atom"
 
+
+// timestampの発行 オンクリックにある
+// input =>追加分数を入れている
 
 function Timer({onHelp}) {
-
-  const [timer, setTimer] = useState("")
+  
+  const timer = useRecoilValue(hostState)
+  // const [timer, setTimer] = useState("")
   const [startTime, setStartTime] = useState(new Date());
+  console.log(timer);
 
   
   const clickHandler = (e) => {
@@ -20,7 +27,7 @@ function Timer({onHelp}) {
     // 押した時間のインスタンス
     const dateDemo = new Date (test)
     // 終了時間
-    const min = dateDemo.setMinutes(dateDemo.getMinutes() + +timer )
+    const min = dateDemo.setMinutes(dateDemo.getMinutes() + +timer.time )
     const result = new Date (min)
     console.log(result, startTime)
     // 開始時間
@@ -37,29 +44,9 @@ function Timer({onHelp}) {
   }
   
   return (
-  <>
+  <div style={{marginTop:"5%",marginLeft:"40%"}}>
   <button onClick={clickHandler}>Start</button>
-  <input  value={timer} onChange={(e) => changeHandler(e)}/>
-      {/* <div className={classes.box}>
-        <div className={classes.percent}>
-        <svg className={classes.circleZone}>
-            <circle className={classes.percent} cx="300" cy="300" r="250"></circle>
-            <circle
-              style={{ strokeDashoffset: barFill }}
-              cx="300"
-              cy="300"
-              r="250"
-            ></circle>
-          </svg>
-          <div className="number">
-            <h2>
-             3
-              <span>h</span>
-            </h2>
-          </div>
-        </div>
-      </div> */}
-  </>
+  </div>
   )
 }
 

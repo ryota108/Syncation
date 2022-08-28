@@ -5,7 +5,12 @@
   justify-content: center;
   align-items: center;
   background-color: transparent;
-  box-shadow: 1px 1px 1px black;
+  width: 50%;
+  margin: auto;
+  background-image: linear-gradient(to right bottom, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.05) 25%, white);
+  box-shadow: 5px 6px 15px rgb(4 0 0 / 30%), inset 2px 2px 8px rgb(4 0 0 / 30%);
+  margin-top: 15%;
+  border-radius: 100px;
 }
 
 .dot {

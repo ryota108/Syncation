@@ -1,20 +1,22 @@
-// import  { NextPage } from 'next'
-import { useState } from "react";
-import Timer from "../components/Timer";
-import CountDownTimer from "../components/CountDownTimer";
+import Router from "next/router"
+
+
 
 const Home  = () => {
+
+  const hostRooterHandle = ()=> {
+    Router.push("/launchRoom")
+  }
   
-  const [targetTime, setTargetTime] = useState()
-  
-  const submitHandler  = (time) =>{
-    setTargetTime(time)
+  const loginRooterHandle = () => {
+    Router.push("/login")
   }
 
   return (
     <>
-  <Timer onHelp ={submitHandler} />
-  <CountDownTimer targetDate={targetTime} />
+    <h1>TOP ページです</h1>
+    <button onClick={hostRooterHandle}>ルーム作成</button>
+    <button onClick={loginRooterHandle}>ルーム参加</button> 
     </>
   )
 }

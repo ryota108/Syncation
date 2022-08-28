@@ -1,0 +1,22 @@
+.user {
+  width: 20%;
+  height: 200px;
+  border-radius: 50px;
+  background-image: linear-gradient(to right bottom, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.05) 25%, white);
+  box-shadow: 10px 10px 14px rgba(4,0,0,0.3), inset 2px 2px 5px rgba(4,0,0,0.3);
+  mix-blend-mode: overlay;
+}
+.user::before {
+  display: block;
+  content: '';
+  width: 100%; /* 包含ブロックの幅 (W) */
+  height: 0;
+  /* padding-top: 100%;   */
+}
+.userName {
+  text-align: center;
+  margin-top: 20%;
+}
+.done {
+  text-align: center;
+}
