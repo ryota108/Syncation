@@ -1,7 +1,5 @@
 import Router from "next/router"
 
-
-
 const Home  = () => {
 
   const hostRooterHandle = ()=> {
@@ -14,7 +12,8 @@ const Home  = () => {
 
   return (
     <>
-    <h1>TOP ページです</h1>
+    <p>Syncationとはsynchronismとmotivationをかけ合わせた言葉で</p>
+    <h1 >TOP ページです</h1>
     <button onClick={hostRooterHandle}>ルーム作成</button>
     <button onClick={loginRooterHandle}>ルーム参加</button> 
     </>

@@ -2,8 +2,8 @@ import { useState } from "react";
 import Timer from "../../components/Timer";
 import CountDownTimer from "../../components/CountDownTimer";
 import UserAll from "../../components/UserAll";
-import { userState, hostState } from "../../recoil/atom";
-import {useRecoilValue} from "recoil"
+import { userState, hostState,isRestingState } from "../../recoil/atom";
+import {useRecoilValue, useSetRecoilState} from "recoil"
 import Link from "next/link"
 
 
@@ -14,11 +14,9 @@ const Home  = () => {
 
   const user = useRecoilValue(userState)
   const host  = useRecoilValue(hostState)
+  const isResting = useRecoilValue(isRestingState)
+  const setIsResting = useSetRecoilState(isRestingState)
   // start処理がtrueにする条件
-
- 
-
- console.log(user.length,host.length)
   
   const submitHandler  = (time) =>{
     if( host && user.length >= 1){
@@ -26,10 +24,15 @@ const Home  = () => {
      }
   }
 
+  const helpHandler = (state) => {
+    setIsResting(state)
+    console.log(isResting);
+  }
+
   return (
     <>
 
-<CountDownTimer targetDate={targetTime} />
+<CountDownTimer targetDate={targetTime} helpHandler={helpHandler} />
   <Timer onHelp ={submitHandler} />
   <UserAll/>
   <Link href="/login">login</Link>

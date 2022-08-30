@@ -2,7 +2,7 @@ import React from 'react';
 import classes from "./DateTimeDisplay.module.css";
 
 const DateTimeDisplay = ({ value , type , isDanger }) => {
-  if (!value){
+  if (value === -1 || !value){
     value = 0
   } else if (0  < value && value < 10){
     value = "0" + value

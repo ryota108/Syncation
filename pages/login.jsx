@@ -1,7 +1,7 @@
 import React , {useRef} from 'react'
 import classes from "../styles/login.module.css";
 import Router from "next/router"
-import {atom, useRecoilValue,useSetRecoilState} from "recoil"
+import {useRecoilValue,useSetRecoilState} from "recoil"
 import {userState} from '../recoil/atom'
 
 

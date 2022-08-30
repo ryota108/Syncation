@@ -7,3 +7,10 @@ export const userState = atom({
   export const hostState = atom({
     key: 'hostState',
     default: {}})
+
+  export const isRestingState = atom(
+    {
+      key:"isRestingState",
+      default:false
+    }
+  )
