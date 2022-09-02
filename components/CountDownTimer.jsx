@@ -1,20 +1,23 @@
-import React from 'react';
+import React,{useState} from 'react';
 import { useClock } from "../hooks/useClock";
 import ShowCounter from "./ShowCounter";
 import { useSetRecoilState,useRecoilValue } from 'recoil';
 import { isStudyingState } from '../recoil/atom';
+import StopNotification from './StopNotification';
 
-const CountdownTimer = ({ targetDate,helpHandler }) => {
-  const [days, hours, minutes, seconds] = useClock(targetDate);
-  
+const CountdownTimer = ({ targetDate }) => {
+  const [days, hours, minutes, seconds] = useClock(targetDate);  
   if (days + hours + minutes + seconds == 0) {
-    helpHandler(true)
-   return  (<ShowCounter
-   days={0}
-   hours={0}
-   minutes={0}
-   seconds={0}
- />);
+    return (
+    <>
+    <StopNotification/>
+    <ShowCounter
+    days={days}
+    hours={hours}
+    minutes={minutes}
+    seconds={seconds}
+  />
+    </>);
   } else {
     return (
       <ShowCounter

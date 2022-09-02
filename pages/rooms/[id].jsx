@@ -10,12 +10,10 @@ import Link from "next/link"
 const Home  = () => {
   
   const [targetTime, setTargetTime] = useState()
-  const [start, setStart] = useState(false);
 
   const user = useRecoilValue(userState)
   const host  = useRecoilValue(hostState)
-  const isResting = useRecoilValue(isRestingState)
-  const setIsResting = useSetRecoilState(isRestingState)
+
   // start処理がtrueにする条件
   
   const submitHandler  = (time) =>{
@@ -24,16 +22,12 @@ const Home  = () => {
      }
   }
 
-  const helpHandler = (state) => {
-    setIsResting(state)
-    console.log(isResting);
-  }
+  console.log(host);
 
   return (
     <>
-
-<CountDownTimer targetDate={targetTime} helpHandler={helpHandler} />
-  <Timer onHelp ={submitHandler} />
+<CountDownTimer targetDate={targetTime}/>
+  <Timer onHelp ={submitHandler}  />
   <UserAll/>
   <Link href="/login">login</Link>
   <Link href="/launchRoom">host</Link>

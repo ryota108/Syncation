@@ -1,19 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
 .showCounter {
   display: flex;
   flex-direction: row;
-  column-gap: 1.5rem;
+  column-gap: 1rem;
   justify-content: center;
   align-items: center;
   background-color: transparent;
-  width: 50%;
+  width: 25%;
   margin: auto;
-  background-image: linear-gradient(to right bottom, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.05) 25%, white);
-  box-shadow: 5px 6px 15px rgb(4 0 0 / 30%), inset 2px 2px 8px rgb(4 0 0 / 30%);
   margin-top: 15%;
-  border-radius: 100px;
+  border-radius: 5px;
+  background-color: transparent;
+  border: 3px solid #5ce1E6;
+  box-shadow: 0 0 30px #5ce1E6;
 }
 
 .dot {
+  color:#5ce1E6;
   margin-top: 10px;
   font-size: 1.5rem;
   font-weight: 900;

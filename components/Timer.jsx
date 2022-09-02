@@ -1,8 +1,8 @@
 import { type } from 'os';
 import React,{useState,useEffect} from 'react';
 import classes from "./Timer.module.css";
-import { useRecoilValue } from "recoil";
-import {hostState} from "../recoil/atom"
+import { useRecoilValue,useSetRecoilState } from "recoil";
+import {hostState, isRestingState} from "../recoil/atom"
 
 
 // timestampの発行 オンクリックにある
@@ -10,12 +10,14 @@ import {hostState} from "../recoil/atom"
 // 休憩したい時間分＝＞インターバルの引数 =>timestampの発行 <=初回のみ rest = true 
 
 function Timer({onHelp}) {
-  const [rest,setRest] = useState(false)
+  const SETTING = "NO_REST";
+  const setting_rest = 2;
+  const isResting = useRecoilValue(isRestingState)
   const timer = useRecoilValue(hostState)
-  // const [timer, setTimer] = useState("")
-  const [startTime, setStartTime] = useState(new Date());
+  const [startTime, setStartTime] = useState(null);
   const miliTime = timer.time * 60 * 1000 
-  const testRest = miliTime + 5000
+  const random = Math.floor(Math.random()*11)
+  const testRest = miliTime + random * 100
 
   
   const clickHandler = (e) => {
@@ -23,29 +25,46 @@ function Timer({onHelp}) {
       return
     }
     const now = new Date()
-    // 押した時間
     const test = now.getTime()
     setStartTime(new Date (test));
-    // 押した時間のインスタンス
     const dateDemo = new Date (test)
-    // 終了時間
     const min = dateDemo.setMinutes(dateDemo.getMinutes() + +timer.time )
-    const result = new Date (min)
-  
-    // 開始時間
-    
-    const diff = result.getTime() - startTime.getTime();
+    console.log("clickHandler"+ timer);
     onHelp(min)
   }
 
  
-
+if(SETTING === "NO_RES"){
   useEffect(() => {
     const interval = setInterval(() => {
       clickHandler()
     }, testRest);
+    
   return () => clearInterval(interval);
   }, [testRest])
+}
+
+  useEffect(() => {
+    if(isResting.isResting === false){
+        const now = new Date()
+        const test = now.getTime()
+        setStartTime(new Date (test));
+        const dateDemo = new Date (test)
+        const min = dateDemo.setMinutes(dateDemo.getMinutes() + +timer.time )
+        onHelp(min)
+      return () => {}
+    } else {
+    const now = new Date()
+    const test = now.getTime()
+    const dateDemo = new Date (test)
+    const min = dateDemo.setMinutes(dateDemo.getMinutes() + setting_rest )
+    onHelp(min)
+    return ()=>{}
+  }
+  },[isResting.isResting])
+
+
+  
   
 
 
@@ -55,9 +74,12 @@ function Timer({onHelp}) {
   }
   
   return (
-  <div style={{marginTop:"5%",marginLeft:"40%"}}>
-  <button onClick={clickHandler}>Start</button>
-  </div>
+    <>
+    <div style={{marginTop:"50px"}}className="btn blue" onClick={clickHandler}>
+            <p>Start</p>
+          </div>
+          </>
+  /* <button onClick={clickHandler}>Start</button> */
   )
 }
 
