@@ -30,7 +30,9 @@ function login() {
       <form onSubmit={formHandle} className={classes.loginModal}>
      <label className={classes.loginInput}>Room ID <input ref={roomRef}/></label>
      <label className={classes.loginInput}>User Name <input ref={userRef}/></label>
-     <button onClick={submitHandle}>Submit</button>
+     <div className="btn blue" onClick={submitHandle}>
+            <p>Submit</p>
+          </div>
      </form>
     </div>
   )

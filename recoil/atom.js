@@ -2,7 +2,7 @@ import {atom} from "recoil"
 
 export const userState = atom({
   key: 'userState',
-  default: []})
+  default: [{id:1,userName:"TEST",progress:0}]})
 
   export const hostState = atom({
     key: 'hostState',
@@ -11,6 +11,6 @@ export const userState = atom({
   export const isRestingState = atom(
     {
       key:"isRestingState",
-      default:false
+      default:{isResting:false}
     }
   )

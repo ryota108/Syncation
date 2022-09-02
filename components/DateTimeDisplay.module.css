@@ -1,6 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
 .number {
+  font-family: 'Orbitron', sans-serif;
+  color: #5ce1E6;
+  text-shadow: 0 0 5px #5ce1E6;
   font-weight: 900;
-  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.195);
   font-size: 2rem;
+}
+.type {
+  font-family: 'Orbitron', sans-serif;
+  color: #5ce1E6;
+  top: -25px;
+  position: relative;
+  text-shadow: 0 0 5px #5ce1e6;
+  font-weight: 900;
+  font-size: 0.8rem;
 }
 
