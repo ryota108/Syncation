@@ -1,11 +1,18 @@
 import Router from "next/router"
 import Link from "next/link"
-import Image from "next/image"
 import {MdOutlineTimer} from "react-icons/md"
 import {MdHowToVote} from "react-icons/md"
 import {FaTasks} from "react-icons/fa"
 import {IoChatbubblesOutline} from "react-icons/io5"
+import {useState} from "react"
+import Modal from "../UI/Modal";
 const Home  = () => {
+
+  const [chat, setChat] = useState(false)
+
+  const chatChangeHandler =  ()=> {
+    setChat(prev =>  !prev)
+  }
 
   return (
     <>
@@ -54,7 +61,7 @@ const Home  = () => {
     <MdHowToVote  size="100px" className="timer_icon"/>
     <p className="function_explain">Vote</p>
     </div>
-    <div className="function_box">
+    <div className="function_box" onClick={chatChangeHandler}>
     <IoChatbubblesOutline size="100px" className="timer_icon"/>
     <p className="function_explain">Chat</p>
     </div>
@@ -68,7 +75,9 @@ const Home  = () => {
 
     </div>
       
-    
+    {chat && <Modal title="Chat">
+      <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
+    </Modal>}
 
     <div className="btn blue">
             <Link href="login">Join Room </Link>
