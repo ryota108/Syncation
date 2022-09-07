@@ -20,6 +20,7 @@ const Home  = () => {
   const [targetTime, setTargetTime] = useState()
   const [needRest,setNeedRest] = useState(false);
 
+  const user = useRecoilValue(userState)
   const users = useRecoilValue(userListState)
   const setUsers = useSetRecoilState(userListState)
   const host  = useRecoilValue(hostState)
