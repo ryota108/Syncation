@@ -3,6 +3,7 @@ import React,{useState,useEffect} from 'react';
 import classes from "./Timer.module.css";
 import { useRecoilValue,useSetRecoilState } from "recoil";
 import {hostState, isRestingState} from "../recoil/atom"
+import { Socket } from 'socket.io-client';
 
 
 // timestampの発行 オンクリックにある
@@ -31,39 +32,40 @@ function Timer({onHelp}) {
     const min = dateDemo.setMinutes(dateDemo.getMinutes() + +timer.time )
 
     // minをサーバ側に送る処理
+    // Socket.emit("left-timer", min)
     console.log("clickHandler"+ timer);
     onHelp(min)
   }
 
  
-if(SETTING === "NO_RES"){
-  useEffect(() => {
-    const interval = setInterval(() => {
-      clickHandler()
-    }, testRest);
+// if(SETTING === "NO_RES"){
+//   useEffect(() => {
+//     const interval = setInterval(() => {
+//       clickHandler()
+//     }, testRest);
     
-  return () => clearInterval(interval);
-  }, [testRest])
-}
+//   return () => clearInterval(interval);
+//   }, [testRest])
+// }
 
-  useEffect(() => {
-    if(isResting.isResting === false){
-        const now = new Date()
-        const test = now.getTime()
-        setStartTime(new Date (test));
-        const dateDemo = new Date (test)
-        const min = dateDemo.setMinutes(dateDemo.getMinutes() + +timer.time )
-        onHelp(min)
-      return () => {}
-    } else {
-    const now = new Date()
-    const test = now.getTime()
-    const dateDemo = new Date (test)
-    const min = dateDemo.setMinutes(dateDemo.getMinutes() + setting_rest )
-    onHelp(min)
-    return ()=>{}
-  }
-  },[isResting.isResting])
+//   useEffect(() => {
+//     if(isResting.isResting === false){
+//         const now = new Date()
+//         const test = now.getTime()
+//         setStartTime(new Date (test));
+//         const dateDemo = new Date (test)
+//         const min = dateDemo.setMinutes(dateDemo.getMinutes() + +timer.time )
+//         onHelp(min)
+//       return () => {}
+//     } else {
+//     const now = new Date()
+//     const test = now.getTime()
+//     const dateDemo = new Date (test)
+//     const min = dateDemo.setMinutes(dateDemo.getMinutes() + setting_rest )
+//     onHelp(min)
+//     return ()=>{}
+//   }
+//   },[isResting.isResting])
 
 
   

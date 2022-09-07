@@ -1,5 +1,5 @@
 import React, { useRef, useState, useContext } from "react";
-import { hostState } from "../recoil/atom";
+import { hostState, userListState } from "../recoil/atom";
 import Router from "next/router";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { MdHowToVote } from "react-icons/md";
@@ -11,6 +11,8 @@ import { io } from "socket.io-client";
 function launchRoom() {
   const host = useRecoilValue(hostState);
   const setHost = useSetRecoilState(hostState);
+  const users = useRecoilValue(userListState)
+  const setUsers = useSetRecoilState(userListState)
   const hostNameRef = useRef(null);
   const [time, setTime] = useState(1);
   const [isVoting, setIsVoting] = useState(false);
@@ -28,22 +30,27 @@ function launchRoom() {
 
       /* ソケット通信によるルーム別の参加 */
 
-      // socket.emit("host_join_room", {
-      //     "roomId": roomId,
-      //     "username": hostNameRef.current.value
-      //   }, (response) => {
-      //    console.log(response.result)
-      //   })
+      socket.emit("join_room", {
+          "roomId": "test",
+          "username": hostNameRef.current.value
+        })
     
       setHost({
         hostName: hostNameRef.current.value,
-        roomId: roomId,
+        roomId: "test",
         time: time,
         isResting:isResting,
         isVoting:isVoting,
-        socket: socket
       });
-      Router.push(`/rooms/${roomId}`);
+
+      setUsers([
+        ...users,
+        {
+          userName: hostNameRef.current.value,
+          roomId: "test",
+        }
+      ])
+      Router.push(`/rooms/test`);
     
     // Router.push(`/`);
     // socket.on("enter", ({user}) => {
