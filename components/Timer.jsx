@@ -80,7 +80,7 @@ if(SETTING === "NO_RES"){
   
   return (
     <>
-    <div style={{marginTop:"50px"}}className="btn blue" onClick={clickHandler}>
+    <div className="btn blue timerBtn" onClick={clickHandler}>
             <p>Start</p>
           </div>
           </>

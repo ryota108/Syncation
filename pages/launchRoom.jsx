@@ -7,10 +7,11 @@ import { AiOutlinePlus, AiFillSetting, AiOutlineSetting } from "react-icons/ai";
 import { FaTasks, FaUserTie } from "react-icons/fa";
 import { RiArrowRightSLine, RiArrowLeftSLine } from "react-icons/ri";
 import { IoTimerOutline } from "react-icons/io5";
+import classes from "../styles/launchRoom.module.css";
 import Task from "../components/Task";
 import TaskAll from "../components/TaskAll";
 
-function launchRoom() {
+function LaunchRoom() {
   const host = useRecoilValue(hostState);
   const setHost = useSetRecoilState(hostState);
   const hostNameRef = useRef(null);
@@ -30,7 +31,7 @@ function launchRoom() {
       hostName: hostNameRef.current.value,
       roomId: roomId,
       time: time,
-      isResting: isResting,
+      isResting: restTime,
       isVoting: isVoting,
     });
     Router.push(`/rooms/${roomId}`);
@@ -197,8 +198,9 @@ function launchRoom() {
             </>
           )}
           {isTask && (
+            <>
             <div className="task_input">
-              <label>
+              <label className="task_label">
                 <FaTasks size="25px" /> Task{" "}
                 <input type="text" ref={taskRef} placeholder="task" />
               </label>
@@ -206,12 +208,12 @@ function launchRoom() {
                 <AiOutlinePlus
                   className="taskAdd_icon"
                   size="25px"
-                  color="#E555C7"
                 />
               </button>
             </div>
-          )}
           <TaskAll />
+            </>
+          )}
           <div className="btn blue submit" onClick={hostSubmitHandle}>
             <p>Submit</p>
           </div>
@@ -221,4 +223,4 @@ function launchRoom() {
   );
 }
 
-export default launchRoom;
+export default LaunchRoom;

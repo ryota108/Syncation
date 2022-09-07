@@ -6,6 +6,10 @@ body {
   background-color: black;
 }
 
+button {
+  background-color: #000;
+}
+
 .btn {
   display: flex;
   justify-content: center;
@@ -191,6 +195,26 @@ label {
 .theme_explain {
   width: 60%;
   margin-left: 15%;
+}
+
+.coming_soon {
+  color: black !important;
+  opacity: 0.5;
+}
+
+.comingSoon_text {
+  position: relative;
+  font-size: 1.5rem;
+  top: -80px;
+  text-align: center;
+  opacity: 0;
+  margin-bottom: -50px;
+  transition: 1s;
+}
+
+.function_box:hover .comingSoon_text {
+  color: white;
+  opacity: 1;
 }
 
 .function_box {
@@ -400,6 +424,7 @@ label {
 }
 
 .hostInput_area {
+  margin-top: -50px;
   display: flex;
   justify-content: center;
 }
@@ -481,15 +506,27 @@ label {
 
 .taskAddIcon {
   background-color: transparent;
+  border: none;
 }
 .taskAdd_icon {
-  margin-top: 20px;
-  color: #e555c7;
+  margin-top: 25px;
+  color: rgb(0, 254, 0);
 }
 
 .task_input {
+  justify-content: center;
   display: flex;
   align-items: center;
+  transform: translateX(25px);
+}
+
+.task_input input {
+  border: 2px solid lightgreen;
+  color: lightgreen;
+}
+
+.task_label {
+  color: lightgreen;
 }
 
 .header_links {
@@ -857,6 +894,22 @@ label {
   border: 2px solid violet;
   border-radius: 5%;
   z-index: 10;
+  animation-name: fadeUpAnime;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+  opacity: 0;
+}
+
+@keyframes fadeUpAnime {
+  from {
+    opacity: 0;
+    transform: translateY(100px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .restIcon_time {
@@ -908,3 +961,156 @@ label {
   color: white;
 }
 
+.needRest {
+  transition: 0.5s;
+  filter:  drop-shadow(5px 5px 20px #e555c7 );
+}
+
+.needRest_off {
+  opacity: 0.3;
+  filter:  drop-shadow(5px 5px 20px gray );
+}
+
+.function_container_off {
+  user-select: none;
+  opacity: 0.2;
+  flex-wrap: wrap;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.card {
+  border: 2px solid #e555c7;
+  min-width: 100px;
+  background-color: #e555c7;
+  box-shadow: 0px 0px 5px #e555c7;
+  border-radius: 5%;
+  margin-bottom: 20px;
+  margin: 10px 10px;
+  height: 20px;
+  padding:50px;
+  opacity: 0;
+  animation: slideIn 2s cubic-bezier(0.25, 1, 0.5, 1) 1 forwards;
+}
+
+.card_wrapper {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.card > p {
+  color: white;
+  text-shadow: none;
+  font-size: 2rem;
+  text-align: center;
+  margin-top: -15px;
+  animation: cards 3s cubic-bezier(0.25, 1, 0.5, 1) 1 forwards;
+}
+
+.joinRoom_title {
+ text-align: center;
+ position: absolute;
+ top: 90px;
+ left: 40%;
+ background-color: black;
+}
+
+.demo {
+  font-family:"Monotype Corsiva";
+  margin: 0;
+  padding:0;
+  color:#111;
+  font-size:5rem;
+  align-items: center;
+}
+
+.right {
+  position: absolute;
+  top: 100px;
+  right: 150px;
+}
+.left {
+  position: absolute;
+  top: 100px;
+  left: 150px;
+}
+
+.light_off span {
+  text-shadow: none!important;
+  animation: none !important;
+}
+
+.demo span {
+  display: table-cell ;
+  margin: 0;
+  padding:0;
+  animation: animate 3s cubic-bezier(0.72, 1.3, 0.54, -0.57) infinite;
+}
+
+
+@keyframes animate {
+
+  0%,100% {
+    color:#fff;
+    filter: blur(2px);
+    text-shadow:  0 0 10px #02c4ff,
+                 0 0 20px #02c4ff,
+                 0 0 40px #02c4ff,
+                 0 0 80px #02c4ff,
+                 0 0 120px #02c4ff,
+                 0 0 200px #02c4ff,
+                 0 0 300px #02c4ff,
+                 0 0 400px #02c4ff;
+  }
+  5%,95% {
+    color:#111;
+    filter: blur(0px);
+    text-shadow:none;
+  }
+  
+}
+
+ 
+@keyframes slideIn {
+  0% {
+    transform: translateX(180px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    position: absolute;
+  }
+  40%,100% {
+    opacity: 1;
+  }
+}
+
+@keyframes cards {
+  0%,99% {
+    color: white;
+  }
+  100% {
+    color: #e555c7;
+  }
+}
+
+@keyframes cardShow {
+  0% {
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1!important;
+  }
+}
+
+
+.timerBtn {
+  position: absolute;
+  top: 35%;
+  left: 50%;
+  transform: translateY(-50%) translateX(-50%);
+}
+
+.loginBtn{
+  margin: 20px;
+}
