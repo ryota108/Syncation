@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Timer from "../../components/Timer";
 import CountDownTimer from "../../components/CountDownTimer";
 import UserAll from "../../components/UserAll";
 import { userState, hostState,isRestingState } from "../../recoil/atom";
 import {useRecoilValue, useSetRecoilState} from "recoil"
 import Link from "next/link"
+import { SocketContext } from "../../context/SocketProvider";7
+// import {socket} from '../launchRoom'
 
 
 const Home  = () => {
@@ -13,7 +15,8 @@ const Home  = () => {
 
   const user = useRecoilValue(userState)
   const host  = useRecoilValue(hostState)
-
+  const socket = useContext(SocketContext)
+  console.log(socket)
   // start処理がtrueにする条件
   
   const submitHandler  = (time) =>{
@@ -22,7 +25,11 @@ const Home  = () => {
      }
   }
 
-  console.log(host);
+  /* ルームに入室してきたユーザの情報を取得する */
+
+  socket.on("joined_room", (data) => {
+    console.log("ID: " + data.id + "ユーザ名: " + data.username)
+  })
 
   return (
     <>

@@ -1,8 +1,12 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useContext } from "react";
 import { hostState } from "../recoil/atom";
 import Router from "next/router";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { MdHowToVote } from "react-icons/md";
+import { SocketContext } from "../context/SocketProvider";
+import { io } from "socket.io-client";
+
+// export const socket = io("ws://localhost:8000", { path: "/ws/socket.io/"})
 
 function launchRoom() {
   const host = useRecoilValue(hostState);
@@ -11,19 +15,37 @@ function launchRoom() {
   const [time, setTime] = useState(1);
   const [isVoting, setIsVoting] = useState(false);
   const [isResting,setIsResting] = useState(false)
+  const socket = useContext(SocketContext)
+  
+  console.log(socket)
 
-  const hostSubmitHandle = () => {
+  const hostSubmitHandle = async () => {
+    
+    console.log("関数実行")
     const roomId =
       new Date().getTime().toString(16) +
       Math.floor(Math.random()).toString(16);
-    setHost({
-      hostName: hostNameRef.current.value,
-      roomId: roomId,
-      time: time,
-      isResting:isResting,
-      isVoting:isVoting
-    });
+
+      /* ソケット通信によるルーム別の参加 */
+
+      socket.emit("join_room", {
+          "roomId": roomId,
+          "username": hostNameRef.current.value
+      })
+
+      setHost({
+          hostName: hostNameRef.current.value,
+          roomId: roomId,
+          time: time,
+          isResting:isResting,
+          isVoting:isVoting,
+          socket: socket
+      });
+    
     Router.push(`/rooms/${roomId}`);
+    // socket.on("enter", ({user}) => {
+    //   console.log(`${user}がJoinしました。`)
+    // })
   };
 
   const formHandle = (e) => {

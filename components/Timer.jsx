@@ -29,6 +29,8 @@ function Timer({onHelp}) {
     setStartTime(new Date (test));
     const dateDemo = new Date (test)
     const min = dateDemo.setMinutes(dateDemo.getMinutes() + +timer.time )
+
+    // minをサーバ側に送る処理
     console.log("clickHandler"+ timer);
     onHelp(min)
   }

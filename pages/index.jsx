@@ -7,6 +7,18 @@ import {FaTasks} from "react-icons/fa"
 import {IoChatbubblesOutline} from "react-icons/io5"
 const Home  = () => {
 
+  const massage = async () => { 
+    try {
+      let res = await fetch("http://localhost:8000/hello")
+      res = await res.json()
+      console.log(res)
+    } catch (err) {
+        console.log(err)
+    }
+  }
+  
+  massage()
+
   return (
     <>
     <header>
