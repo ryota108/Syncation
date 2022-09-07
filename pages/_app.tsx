@@ -5,11 +5,12 @@ import type { AppProps } from 'next/app'
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-  <RecoilRoot>
-    <SocketProvider>
-    <Component {...pageProps} />
-    </SocketProvider>
-  </RecoilRoot>)
+  <SocketProvider >
+    <RecoilRoot>
+     <Component {...pageProps} />
+    </RecoilRoot>
+  </SocketProvider>
+  )
 }
 
 export default MyApp

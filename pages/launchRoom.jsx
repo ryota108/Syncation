@@ -28,21 +28,24 @@ function launchRoom() {
 
       /* ソケット通信によるルーム別の参加 */
 
-      socket.emit("join_room", {
-          "roomId": roomId,
-          "username": hostNameRef.current.value
-      })
-
-      setHost({
-          hostName: hostNameRef.current.value,
-          roomId: roomId,
-          time: time,
-          isResting:isResting,
-          isVoting:isVoting,
-          socket: socket
-      });
+      // socket.emit("host_join_room", {
+      //     "roomId": roomId,
+      //     "username": hostNameRef.current.value
+      //   }, (response) => {
+      //    console.log(response.result)
+      //   })
     
-    Router.push(`/rooms/${roomId}`);
+      setHost({
+        hostName: hostNameRef.current.value,
+        roomId: roomId,
+        time: time,
+        isResting:isResting,
+        isVoting:isVoting,
+        socket: socket
+      });
+      Router.push(`/rooms/${roomId}`);
+    
+    // Router.push(`/`);
     // socket.on("enter", ({user}) => {
     //   console.log(`${user}がJoinしました。`)
     // })

@@ -1,3 +1,4 @@
+import {useContext} from "react"
 import Router from "next/router"
 import Link from "next/link"
 import Image from "next/image"
@@ -5,6 +6,7 @@ import {MdOutlineTimer} from "react-icons/md"
 import {MdHowToVote} from "react-icons/md"
 import {FaTasks} from "react-icons/fa"
 import {IoChatbubblesOutline} from "react-icons/io5"
+import { SocketContext } from "../context/SocketProvider"
 const Home  = () => {
 
   const massage = async () => { 
@@ -18,6 +20,12 @@ const Home  = () => {
   }
   
   massage()
+
+  const socket = useContext(SocketContext)
+
+  // socket.on("joined_room", (data) => {
+  //   console.log("ID: " + data.id + "ユーザ名: " + data.username)
+  // })
 
   return (
     <>
