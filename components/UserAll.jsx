@@ -21,11 +21,6 @@ function UserAll() {
       return (<User key={index} userName={user.userName} done={`${user.progress}%`}/>)
     })}
     </div>
-    {/* <div className={`${classes.box} ${classes.bottom}`}>
-   {data2.map((user,index)=>{
-      return (<User key={index} userName={user.user} done={user.done}/>)
-    })}
-    </div> */}
   </div>
   
   )

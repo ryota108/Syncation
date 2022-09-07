@@ -1,11 +1,22 @@
 import Router from "next/router"
 import Link from "next/link"
-import Image from "next/image"
 import {MdOutlineTimer} from "react-icons/md"
 import {MdHowToVote} from "react-icons/md"
 import {FaTasks} from "react-icons/fa"
-import {IoChatbubblesOutline} from "react-icons/io5"
+import {IoChatbubblesOutline,IoGameController} from "react-icons/io5"
+import{FiPhoneCall} from "react-icons/fi";
+import{TbReportAnalytics} from "react-icons/tb";
+import{GiImperialCrown} from "react-icons/gi";
+import {useState} from "react"
+import Modal from "../UI/Modal";
+import Shuffle from "../components/Shuffle"
 const Home  = () => {
+
+  const [chat, setChat] = useState(false)
+
+  const chatChangeHandler =  ()=> {
+    setChat(prev =>  !prev)
+  }
 
   return (
     <>
@@ -54,13 +65,35 @@ const Home  = () => {
     <MdHowToVote  size="100px" className="timer_icon"/>
     <p className="function_explain">Vote</p>
     </div>
-    <div className="function_box">
+    <div className="function_box" onClick={chatChangeHandler}>
     <IoChatbubblesOutline size="100px" className="timer_icon"/>
     <p className="function_explain">Chat</p>
     </div>
     <div className="function_box">     
    <FaTasks  size="90px" className="timer_icon"/>
     <p className="function_explain">Tasks</p>
+    </div>   
+    </div>
+    <div style={{display:"flex",justifyContent:"space-evenly","flexWrap":"wrap"}}>
+    <div className="function_box">     
+   <FiPhoneCall  size="90px" className="timer_icon coming_soon"/>
+   <p className="comingSoon_text">Coming Soon</p>
+    <p className="function_explain coming_soon">Call</p>
+    </div>
+    <div className="function_box">     
+   <TbReportAnalytics  size="90px" className="timer_icon coming_soon"/>
+    <p className="comingSoon_text">Coming Soon</p>
+    <p className="function_explain coming_soon">Analyze</p>
+    </div>
+    <div className="function_box">     
+   <GiImperialCrown  size="90px" className="timer_icon coming_soon"/>
+   <p className="comingSoon_text">Coming Soon</p>
+    <p className="function_explain coming_soon">Ranking</p>
+    </div>
+    <div className="function_box">     
+   <IoGameController  size="90px" className="timer_icon coming_soon"/>
+   <p className="comingSoon_text">Coming Soon</p>
+    <p className="function_explain coming_soon">Game mode</p>
     </div>
     </div>
     <div className="line_container">
@@ -68,7 +101,10 @@ const Home  = () => {
 
     </div>
       
-    
+    {chat && <Modal title="Chat">
+      <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
+    </Modal>}
+    <Shuffle/>
 
     <div className="btn blue">
             <Link href="login">Join Room </Link>

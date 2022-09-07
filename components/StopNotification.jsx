@@ -13,11 +13,8 @@ function StopNotification() {
 
 
   return (
-    <div className="container">
-    <div className="ripples">
-      <div></div>
-    </div>
-  </div>
+ <>
+ </>
   )
 }
 

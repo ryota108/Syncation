@@ -1,6 +1,7 @@
 import React , {useRef} from 'react'
 import classes from "../styles/login.module.css";
 import Router from "next/router"
+import {BsDoorOpenFill,BsDoorOpen} from "react-icons/bs";
 import {useRecoilValue,useSetRecoilState} from "recoil"
 import {userState} from '../recoil/atom'
 
@@ -25,12 +26,12 @@ function login() {
 }
 
   return (
-    <div>    
-      <h1>ルームに参加する</h1>
+    <div className='Modal'>    
+      <h1 className={classes.joinTheRoomTitle}>Join the Room <BsDoorOpenFill color='white'/> </h1>
       <form onSubmit={formHandle} className={classes.loginModal}>
      <label className={classes.loginInput}>Room ID <input ref={roomRef}/></label>
      <label className={classes.loginInput}>User Name <input ref={userRef}/></label>
-     <div className="btn blue" onClick={submitHandle}>
+     <div className="btn blue loginBtn" onClick={submitHandle}>
             <p>Submit</p>
           </div>
      </form>

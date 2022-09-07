@@ -1,0 +1,45 @@
+.NotificationModal {
+  position: absolute;
+  top: 2%;
+  width: 500px;
+  height: auto;
+  border: 2px solid #e555c7;
+  /* border-radius: 5%; */
+  left: 35%;
+  z-index: 100;
+  opacity: 0;
+  background-color: black;
+  animation: zoomIn 3.5s cubic-bezier(0.25, 1, 0.5, 1) 1 backwards;
+}
+
+.NotificationContents {
+  display: flex;
+  align-items: center;
+}
+
+.NotificationContents > h2 {
+  color: #e555c7;
+  text-shadow: 0px 0px 10px #e555c7;
+  font-family:"Orbitron", sans-serif;}
+
+  .NotificationContents > h2 >span {
+    color: deeppink;
+    text-shadow: 0px 0px 10px deeppink;
+  }
+   
+  @keyframes zoomIn {
+    0% {
+      transform: scale(0.8);
+      opacity: 0;
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    90% {
+      opacity: 0.2;
+    }
+    100% {
+      opacity: 0.05;
+    }
+  }

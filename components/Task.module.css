@@ -1,0 +1,25 @@
+.task {
+  display: flex;
+  width: 200px;
+  justify-content: space-between;
+  margin: auto;
+}
+.taskName {
+  margin-right: 20px;
+  color: #05fd47;
+}
+.deleteBtn:hover .deleteIcon {
+  transform: scale(1.2);
+}
+.deleteIcon {
+  color: #05fd47;
+  filter: drop-shadow(10px 10px 10px #5ce1E6);
+  transition: 0.5s;
+}
+.deleteBtn {
+  background-color: black;
+  border: 2px solid #05fd47;
+  height: 50px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 20px #05fd47;
+}
