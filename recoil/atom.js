@@ -8,14 +8,31 @@ export const userState = atom({
     key: 'hostState',
     default: {}})
 
+  export const taskState = atom({
+    key:"taskState",
+    default:[]
+  })
+
+  export const initialState = atom({
+    key:"initialState",
+    default:{isInitial:true}
+  })
+
   export const isRestingState = atom(
     {
       key:"isRestingState",
       default:{isResting:false}
     }
   )
-
+  
   export const userListState = atom({
     key: "userListState",
     default: []
   })
+  
+  export const isVotingState = atom(
+    {
+      key:"isVotingState",
+      default:{isVoting:true , min:1}
+    }
+  )

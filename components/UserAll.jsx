@@ -23,11 +23,6 @@ function UserAll() {
       return (<User key={index} userName={user.username} done={"30%"}/>)
     })}
     </div>
-    {/* <div className={`${classes.box} ${classes.bottom}`}>
-   {data2.map((user,index)=>{
-      return (<User key={index} userName={user.user} done={user.done}/>)
-    })}
-    </div> */}
   </div>
   
   )
