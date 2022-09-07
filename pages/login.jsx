@@ -1,9 +1,10 @@
-import React , {useRef} from 'react'
+import React , {useContext, useRef} from 'react'
 import classes from "../styles/login.module.css";
 import Router from "next/router"
 import {BsDoorOpenFill,BsDoorOpen} from "react-icons/bs";
 import {useRecoilValue,useSetRecoilState} from "recoil"
-import {userState} from '../recoil/atom'
+import {userListState, userState} from '../recoil/atom'
+import { SocketContext } from '../context/SocketProvider';
 
 
 function login() {
@@ -15,11 +16,31 @@ function login() {
   const userRef = useRef(null)
   const roomRef = useRef(null)
 
+  const users = useRecoilValue(userListState)
+  const setUsers = useSetRecoilState(userListState)
+
+  const socket = useContext(SocketContext)
+  console.log(users)
+
  
   const submitHandle = ()=>{
     // context でグローバル化にする
+    // socket.on("recieve_left_time", (data) => {
+
+    // })
     setTest([...test ,{id:1,userName:userRef.current.value,progress:0}])
-    Router.push(`/rooms/${roomRef.current.value}`)
+    setUsers([
+      ...users,
+      {
+        "username": userRef.current.value,
+        "roomId": "test"
+      }
+    ])
+    socket.emit("join_room", {
+      "roomId": "test",
+      "username": userRef.current.value
+    })
+    Router.push(`/rooms/test`)
   }
   const formHandle = (e) =>{
   e.preventDefault()

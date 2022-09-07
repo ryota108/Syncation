@@ -1,8 +1,10 @@
-import React, { useRef, useState } from "react";
-import { hostState, taskState } from "../recoil/atom";
+import React, { useRef, useState, useContext } from "react";
+import { hostState, userListState, taskState } from "../recoil/atom";
 import Router from "next/router";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { MdHowToVote } from "react-icons/md";
+import { SocketContext } from "../context/SocketProvider";
+import { io } from "socket.io-client";
 import { AiOutlinePlus, AiFillSetting, AiOutlineSetting } from "react-icons/ai";
 import { FaTasks, FaUserTie } from "react-icons/fa";
 import { RiArrowRightSLine, RiArrowLeftSLine } from "react-icons/ri";
@@ -11,30 +13,60 @@ import classes from "../styles/launchRoom.module.css";
 import Task from "../components/Task";
 import TaskAll from "../components/TaskAll";
 
+
 function LaunchRoom() {
   const host = useRecoilValue(hostState);
   const setHost = useSetRecoilState(hostState);
+  const users = useRecoilValue(userListState)
+  const setUsers = useSetRecoilState(userListState)
   const hostNameRef = useRef(null);
   const taskRef = useRef(null);
   const [time, setTime] = useState(1);
   const [restTime, setRestTime] = useState(0);
   const [isVoting, setIsVoting] = useState(false);
-  const [isResting, setIsResting] = useState(false);
+  const [isResting,setIsResting] = useState(false)
   const [isTask, setIsTask] = useState(false);
   const setTasks = useSetRecoilState(taskState);
   const tasks = useRecoilValue(taskState);
-  const hostSubmitHandle = () => {
+  const socket = useContext(SocketContext)
+  
+  console.log(socket)
+
+  const hostSubmitHandle = async () => {
+    
+    console.log("関数実行")
     const roomId =
       new Date().getTime().toString(16) +
       Math.floor(Math.random()).toString(16);
-    setHost({
-      hostName: hostNameRef.current.value,
-      roomId: roomId,
-      time: time,
-      isResting: restTime,
-      isVoting: isVoting,
-    });
-    Router.push(`/rooms/${roomId}`);
+
+      /* ソケット通信によるルーム別の参加 */
+
+      socket.emit("join_room", {
+          "roomId": "test",
+          "username": hostNameRef.current.value
+        })
+    
+      setHost({
+        hostName: hostNameRef.current.value,
+        roomId: "test",
+        time: time,
+        isResting:isResting,
+        isVoting:isVoting,
+      });
+
+      setUsers([
+        ...users,
+        {
+          userName: hostNameRef.current.value,
+          roomId: "test",
+        }
+      ])
+      Router.push(`/rooms/test`);
+    
+    // Router.push(`/`);
+    // socket.on("enter", ({user}) => {
+    //   console.log(`${user}がJoinしました。`)
+    // })
   };
 
   const formHandle = (e) => {

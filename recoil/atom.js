@@ -24,6 +24,12 @@ export const userState = atom({
       default:{isResting:false}
     }
   )
+  
+  export const userListState = atom({
+    key: "userListState",
+    default: []
+  })
+  
   export const isVotingState = atom(
     {
       key:"isVotingState",

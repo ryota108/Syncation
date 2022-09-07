@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Timer from "../../components/Timer";
 import CountDownTimer from "../../components/CountDownTimer";
 import UserAll from "../../components/UserAll";
-import { userState, hostState,isVotingState,isRestingState } from "../../recoil/atom";
-import {useRecoilValue,useSetRecoilState} from "recoil"
+import { userState, hostState,isRestingState,isVotingState, userListState } from "../../recoil/atom";
+import {useRecoilValue, useSetRecoilState} from "recoil"
 import Link from "next/link"
+import { SocketContext } from "../../context/SocketProvider";7
+// import {socket} from '../launchRoom'
 import Shuffle from "../../components/Shuffle";
 import { MdHowToVote } from "react-icons/md";
 import { FaVoteYea } from "react-icons/fa";
@@ -18,12 +20,14 @@ const Home  = () => {
   const [targetTime, setTargetTime] = useState()
   const [needRest,setNeedRest] = useState(false);
 
-  const user = useRecoilValue(userState)
+  const users = useRecoilValue(userListState)
+  const setUsers = useSetRecoilState(userListState)
   const host  = useRecoilValue(hostState)
   const isResting = useRecoilValue(isRestingState);
   const Voting = useRecoilValue(isVotingState);
   const setVoting = useSetRecoilState(isVotingState);
-
+  const socket = useContext(SocketContext)
+  console.log(users)
 
   // start処理がtrueにする条件
 
@@ -37,11 +41,27 @@ const Home  = () => {
   }
   
   const submitHandler  = (time) =>{
-    if( host && user.length >= 1){
+    if( host && users.length >= 1){
       setTargetTime(time)
      }
   }
 
+  /* ルームに入室してきたユーザの情報を取得する */
+
+  // socket.emit("entered_room", {"username": host.hostName})
+  socket.on("joined_room", (data) => {
+    console.log(data)
+    setUsers([
+      ...users,
+      {
+        "username": data.username,
+      }
+    ])
+  })
+  // socket.on("joined_room", (data) => {
+  //   console.log("ID: " + data.id + "ユーザ名: " + data.username)
+  // })
+  
   const oneMinHandler = () =>{
     setRestTime(1)
   }

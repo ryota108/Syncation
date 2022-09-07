@@ -1,8 +1,10 @@
+import {useContext} from "react"
 import Router from "next/router"
 import Link from "next/link"
 import {MdOutlineTimer} from "react-icons/md"
 import {MdHowToVote} from "react-icons/md"
 import {FaTasks} from "react-icons/fa"
+import { SocketContext } from "../context/SocketProvider"
 import {IoChatbubblesOutline,IoGameController} from "react-icons/io5"
 import{FiPhoneCall} from "react-icons/fi";
 import{TbReportAnalytics} from "react-icons/tb";
@@ -10,6 +12,7 @@ import{GiImperialCrown} from "react-icons/gi";
 import {useState} from "react"
 import Modal from "../UI/Modal";
 import Shuffle from "../components/Shuffle"
+
 const Home  = () => {
 
   const [chat, setChat] = useState(false)
@@ -17,6 +20,24 @@ const Home  = () => {
   const chatChangeHandler =  ()=> {
     setChat(prev =>  !prev)
   }
+
+  const massage = async () => { 
+    try {
+      let res = await fetch("http://localhost:8000/hello")
+      res = await res.json()
+      console.log(res)
+    } catch (err) {
+        console.log(err)
+    }
+  }
+  
+  massage()
+
+  const socket = useContext(SocketContext)
+
+  // socket.on("joined_room", (data) => {
+  //   console.log("ID: " + data.id + "ユーザ名: " + data.username)
+  // })
 
   return (
     <>

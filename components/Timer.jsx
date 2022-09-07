@@ -3,7 +3,7 @@ import React,{useState,useEffect} from 'react';
 import classes from "./Timer.module.css";
 import { useRecoilValue,useSetRecoilState } from "recoil";
 import {hostState, initialState, isRestingState} from "../recoil/atom"
-
+import { Socket } from 'socket.io-client';
 
 // timestampの発行 オンクリックにある
 // input =>追加分数を入れている
@@ -32,22 +32,24 @@ function Timer({onHelp}) {
     const dateDemo = new Date (test)
     const min = dateDemo.setMinutes(dateDemo.getMinutes() + +timer.time )
 
-    // serverに送る処理
-    
+    // minをサーバ側に送る処理
+    // Socket.emit("left-timer", min)
+    console.log("clickHandler"+ timer);
     setInitial({isInitial:false})
     onHelp(min)
   }
 
  
-if(SETTING === "NO_RES"){
-  useEffect(() => {
-    const interval = setInterval(() => {
-      clickHandler()
-    }, testRest);
+// if(SETTING === "NO_RES"){
+//   useEffect(() => {
+//     const interval = setInterval(() => {
+//       clickHandler()
+//     }, testRest);
     
-  return () => clearInterval(interval);
-  }, [testRest])
-}
+//   return () => clearInterval(interval);
+//   }, [testRest])
+// }
+
 
   // useEffect(() => {
   //   if( isResting.isResting && initial.isInitial){
