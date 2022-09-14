@@ -1,7 +1,7 @@
 import React, { useRef, useState, useContext } from "react";
-import { hostState, userListState, taskState } from "../recoil/atom";
+import { hostState, userListState, taskState, roomState } from "../recoil/atom";
 import Router from "next/router";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState, useRecoilState } from "recoil";
 import { MdHowToVote } from "react-icons/md";
 import { SocketContext } from "../context/SocketProvider";
 import { io } from "socket.io-client";
@@ -21,6 +21,7 @@ function LaunchRoom() {
   const setUsers = useSetRecoilState(userListState)
   const hostNameRef = useRef(null);
   const taskRef = useRef(null);
+  const [roomInfo,setRoomInfo ] = useRecoilState(roomState);
   const [time, setTime] = useState(1);
   const [restTime, setRestTime] = useState(0);
   const [isVoting, setIsVoting] = useState(false);
@@ -41,27 +42,72 @@ function LaunchRoom() {
 
       /* ソケット通信によるルーム別の参加 */
 
+      // {
+      //   "request_user": {
+      //     "username": "string",
+      //     "status": "string",
+      //     "room_id": "string",
+      //     "is_host": true
+      //   },
+      //   "request_room": {
+      //     "host_id": "string",
+      //     "timer": "string",
+      //     "num": 0,
+      //     "title": "string",
+      //     "mode": "string"
+      //   }
+      // }
+
       socket.emit("join_room", {
           "roomId": "test",
           "username": hostNameRef.current.value
         })
-    
-      setHost({
-        hostName: hostNameRef.current.value,
-        roomId: "test",
-        time: time,
-        isResting:isResting,
-        isVoting:isVoting,
-      });
 
-      setUsers([
-        ...users,
-        {
-          userName: hostNameRef.current.value,
-          roomId: "test",
-        }
-      ])
-      Router.push(`/rooms/test`);
+        const requestOptions = {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(
+            {
+                "request_user": {
+                  "username": hostNameRef.current.value,
+                  "status": "player",
+                  "room_id": "string",
+                  "is_host": true
+                },
+                "request_room": {
+                  "host_id": "string",
+                  "timer": time,
+                  "num": 0,
+                  "title": "test",
+                  "mode": "chat"
+                }
+              }
+          )
+      };
+
+      fetch('http://localhost:8000/host', requestOptions)
+          .then(response => response.json())
+          .then(res => { 
+            console.log(res)
+            // setHost({
+            //   hostName: hostNameRef.current.value,
+            //   time: time,
+            //   isResting:isResting,
+            //   isVoting:isVoting,
+            // });
+           setRoomInfo({id:res.room_id})
+            Router.push(`/rooms/${res.room_id}`);
+          })
+          .catch(err => console.log(err))
+  
+
+      // setUsers([
+      //   ...users,
+      //   {
+      //     userName: hostNameRef.current.value,
+      //     roomId: "test",
+      //   }
+      // ])
     
     // Router.push(`/`);
     // socket.on("enter", ({user}) => {
