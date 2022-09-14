@@ -22,10 +22,6 @@ function Login() {
   
  
   const submitHandle = ()=>{
-    // context でグローバル化にする
-    // socket.on("recieve_left_time", (data) => {
-
-    // })
 
     const requestOptions = {
       method: 'POST',
@@ -36,9 +32,8 @@ function Login() {
             "status": "player",
             "room_id": roomRef.current.value,
             "is_host": false
-          }        
-      )
-  };
+        }        
+      )};
 
   fetch('http://localhost:8000/user', requestOptions)
       .then(response => response.json())
@@ -47,12 +42,13 @@ function Login() {
       })
       .catch(err => console.log(err))
     console.log(roomRef.current.value)
-    // setTest([...test ,{id:1,userName:userRef.current.value,progress:0}])
     setUsers([
       ...users,
       {
         "username": userRef.current.value,
-        "roomId": "test"
+        "status": "player",
+        "room_id": roomRef.current.value,
+        "is_host": false
       }
     ])
     setRoomInfo({id: roomRef.current.value})

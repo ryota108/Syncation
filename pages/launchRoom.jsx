@@ -34,71 +34,58 @@ function LaunchRoom() {
   console.log(socket)
 
   const hostSubmitHandle = async () => {
+
+    /* ルームIDの発行 */
+
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(
+        {
+            "request_user": {
+              "username": hostNameRef.current.value,
+              "status": "player",
+              "room_id": "string",
+              "is_host": true
+            },
+            "request_room": {
+              "host_id": "string",
+              "timer": time,
+              "milisecond": "0",
+              "num": 0,
+              "title": "test",
+              "mode": "chat"
+            }
+          }
+      )};
     
-    console.log("関数実行")
-    const roomId =
-      new Date().getTime().toString(16) +
-      Math.floor(Math.random()).toString(16);
+    fetch('http://localhost:8000/host', requestOptions)
+    .then(response => response.json())
+    .then(res => { 
+      console.log(res)
+      setRoomInfo({id:res.room_id})
 
-      /* ソケット通信によるルーム別の参加 */
+       /* ソケット通信によるルーム別の参加 */
 
-      // {
-      //   "request_user": {
-      //     "username": "string",
-      //     "status": "string",
-      //     "room_id": "string",
-      //     "is_host": true
-      //   },
-      //   "request_room": {
-      //     "host_id": "string",
-      //     "timer": "string",
-      //     "num": 0,
-      //     "title": "string",
-      //     "mode": "string"
-      //   }
-      // }
+       socket.emit("join_room", {
+        "roomId": res.room_id,
+        "username": hostNameRef.current.value
+      }, (response) => {
+      if(response.result === "Success") {
+      setUsers([
+        ...users,
+        {
+        "username": hostNameRef.current.value,
+        "status": "player",
+        "room_id": res.room_id,
+        "is_host": true
+        }])
+      }})
 
-      socket.emit("join_room", {
-          "roomId": "test",
-          "username": hostNameRef.current.value
-        })
-
-        const requestOptions = {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(
-            {
-                "request_user": {
-                  "username": hostNameRef.current.value,
-                  "status": "player",
-                  "room_id": "string",
-                  "is_host": true
-                },
-                "request_room": {
-                  "host_id": "string",
-                  "timer": time,
-                  "num": 0,
-                  "title": "test",
-                  "mode": "chat"
-                }
-              }
-          )
-      };
-
-      fetch('http://localhost:8000/host', requestOptions)
-          .then(response => response.json())
-          .then(res => { 
-            console.log(res)
-            // setHost({
-            //   hostName: hostNameRef.current.value,
-            //   time: time,
-            //   isResting:isResting,
-            //   isVoting:isVoting,
-            // });
-           setRoomInfo({id:res.room_id})
-            Router.push(`/rooms/${res.room_id}`);
-          })
-          .catch(err => console.log(err))
+      /*URLの遷移 */
+      Router.push(`/rooms/${res.room_id}`);
+    })
+    .catch(err => console.log(err))
   
 
       // setUsers([
