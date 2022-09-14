@@ -1,5 +1,18 @@
 import {atom} from "recoil"
 
+/* 
+　理想
+　ルーム内のユーザーの情報を管理する状態
+　　・userState
+    ・hostState
+    ・userListState
+  ルーム情報を管理する状態
+     isResting
+     isVoting
+  タスクを管理する状態
+  
+*/
+
 export const userState = atom({
   key: 'userState',
   default: [{id:1,userName:"TEST",progress:0}]})
@@ -36,3 +49,9 @@ export const userState = atom({
       default:{isVoting:true , min:1}
     }
   )
+
+
+  export const roomState = atom({
+    key: "roomState",
+    default:{}
+  })
