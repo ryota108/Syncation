@@ -5,7 +5,7 @@ function Shuffle() {
 
   return (
     <div className="card_wrapper">
-      {cards.map((card,index)=>{return <div className='card' style={{animationDelay:`${index}s`}}><p style={{animationDelay:`${index}s`}}>{card}min</p></div>})}
+      {cards.map((card,index)=>{return <div className='card' style={{animationDelay:`${ 5 + index}s`}}><p style={{animationDelay:`${ 5 + index}s`}}>{card}min</p></div>})}
     </div>
   )
 }

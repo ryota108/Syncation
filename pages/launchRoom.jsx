@@ -45,7 +45,34 @@ function LaunchRoom() {
           "roomId": "test",
           "username": hostNameRef.current.value
         })
-    
+
+        // fetch('http://localhost:8000/host', {
+        //   method: 'POST',
+        //   headers: {
+        //     'Content-Type': 'application/json'
+        //   },
+        //   body: JSON.stringify(
+        //     {
+        //     "request_user": {
+        //       "username":hostNameRef.current.value ,
+        //       "status": "string",
+        //       "room_id": "string",
+        //       "is_host": true
+        //     },
+        //     "request_room": {
+        //       "host_id": "string",
+        //       "timer": time,
+        //       "num": 0,
+        //       "title": "string",
+        //       "mode": isVoting
+        //     }}
+        //   )
+        // }).then(function(response) {
+        //  console.log(response)
+        // }, function(error) {
+        //   window.alert(error)
+        // });
+
       setHost({
         hostName: hostNameRef.current.value,
         roomId: "test",

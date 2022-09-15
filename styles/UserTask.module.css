@@ -1,0 +1,11 @@
+.taskContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.taskTitle {
+  text-decoration: line-through;
+  font-size: 1.3rem;
+  color: aquamarine;
+}

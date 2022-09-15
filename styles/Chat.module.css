@@ -1,0 +1,38 @@
+.message {
+  color: deeppink;
+}
+.chatTitle {
+  display: flex;
+  justify-content: center;
+  color: deeppink;
+  text-shadow: 0px 0px 20px deeppink;
+}
+.icon {
+  border: 2px solid deeppink;
+  width: 70px;
+  border-radius: 5%;
+}
+.icon > p {
+  font-size: 1.2rem;
+  color: rgb(243, 118, 185);
+  text-shadow: none;
+}
+.commentContainer {
+  width: 80%;
+  margin:auto;
+  /* background-color: gray; */
+  align-items:center;
+  display: flex;
+}
+.messageBody {
+  color: white;
+  margin-left: 20px;
+}
+.message {
+  text-shadow: none;
+
+}
+.publishDate {
+  font-size: 0.8rem;
+  color: white;
+}
