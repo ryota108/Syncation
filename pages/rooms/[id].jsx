@@ -32,7 +32,6 @@ const Home  = () => {
 
   const user = useRecoilValue(userState)
   const users = useRecoilValue(userListState)
-  const user = useRecoilValue(userState)
   const setUsers = useSetRecoilState(userListState)
   const host  = useRecoilValue(hostState)
   const isResting = useRecoilValue(isRestingState);
