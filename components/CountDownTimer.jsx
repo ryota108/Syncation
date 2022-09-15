@@ -18,7 +18,19 @@ const CountdownTimer = ({ targetDate }) => {
     seconds={seconds}
   />
     </>);
-  } else {
+  } else if (days + hours + minutes + seconds == -3){
+    return (
+      <>
+      <StopNotification/>
+      <ShowCounter
+      days={days}
+      hours={hours}
+      minutes={minutes}
+      seconds={seconds}
+    />
+      </>);
+  }
+  else {
     return (
       <ShowCounter
         days={days}

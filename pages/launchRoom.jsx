@@ -30,11 +30,11 @@ function LaunchRoom() {
   const tasks = useRecoilValue(taskState);
   const socket = useContext(SocketContext)
   
-  console.log(socket)
-
+  const isMode = isVoting ? "VOTE": isResting ? "REST" : "NO_REST";
   const hostSubmitHandle = async () => {
 
     /* ルームIDの発行 */
+    // 条件1 ? 条件1がtrueの時の処理 : 条件2 ? 条件2がtrueの場合の処理 : 条件2がfalseの場合の処理;
 
     const requestOptions = {
       method: 'POST',
@@ -53,7 +53,7 @@ function LaunchRoom() {
               "milisecond": "0",
               "num": 0,
               "title": "test",
-              "mode": "chat"
+              "mode": isMode 
             }
           }
       )};
@@ -62,7 +62,7 @@ function LaunchRoom() {
     .then(response => response.json())
     .then(res => { 
       console.log(res)
-      setRoomInfo({id:res.room_id})
+      setRoomInfo({...roomInfo, id:res.room_id, restTime: restTime})
 
        /* ソケット通信によるルーム別の参加 */
 

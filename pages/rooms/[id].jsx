@@ -29,14 +29,14 @@ const Home  = () => {
   const [chatOpen,setChatOpen] = useState(false);
   const [taskOpen,setTaskOpen] = useState(false);
   const [roomInfo,setRoomInfo] = useRecoilState(roomState);
+  const [voteDone,setVoteDone] = useRecoilState(isVotingState);
+
 
   const user = useRecoilValue(userState)
   const users = useRecoilValue(userListState)
   const setUsers = useSetRecoilState(userListState)
   const host  = useRecoilValue(hostState)
   const isResting = useRecoilValue(isRestingState);
-  const Voting = useRecoilValue(isVotingState);
-  const setVoting = useSetRecoilState(isVotingState);
   const socket = useContext(SocketContext)
 
   // start処理がtrueにする条件
@@ -61,7 +61,8 @@ const Home  = () => {
     fetch(`http://localhost:8000/room/${roomInfo.id}`)
     .then((res) => res.json())
     .then(res => { 
-      setRoomInfo(res)
+      console.log(res)
+      setRoomInfo({...roomInfo, ...res})
       // ミリ時間の更新
       if (res.milisecond !== "00") {
         setTargetTime(Number(res.milisecond))
@@ -86,7 +87,7 @@ const Home  = () => {
     .catch(err => console.log(err))
   }, [])
 
-
+  console.log(roomInfo)
  /* 途中から参加してきたユーザの情報を取得する */
   useEffect(() => {
     socket.on("joined_room", (data) => {
@@ -116,6 +117,28 @@ const Home  = () => {
       setTargetTime(Number(data.time))
     })
   }, [])
+
+  console.log(voteDone.isVoting)
+  if(voteDone.isVoting){
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(
+        {
+          "time": restTime,
+          "room_id": roomInfo.id,
+          "rest_flag": false,
+          "turn": roomInfo.turn
+        }
+      )};
+    
+    fetch(`http://localhost:8000/room/${roomInfo.id}/vote/${roomInfo.turn}`, requestOptions)
+    .then(response => response.json())
+    .then(res => {
+      console.log(res)
+      setVoteDone({...voteDone, isVoting: false})
+    })
+  }
   
   const oneMinHandler = () =>{
     setRestTime(1)
@@ -152,7 +175,8 @@ const Home  = () => {
   return (
     <>
     {/* isResting.isResting */}
-{(isResting.isResting && Voting.isVoting) && <div className="voteModal">
+    {console.log(isResting.isResting, voteDone.isVoting)}
+{(isResting.isResting && !voteDone.isVoting) && <div className="voteModal">
  <h1 className="voteTitle"><MdHowToVote />Vote time</h1> 
  <div className="rest_choice">
   <div className={!needRest ? "needRest": "needRest_off"} onClick={needNotRestHandler}>
@@ -178,9 +202,6 @@ const Home  = () => {
     <p className={isTen ? "vote_explain vote_explain_on": "vote_explain"}>10min</p>
     </button>
     </div>
-    <button className="voteTimeBtn" onClick={()=> setVoting({isVoting :false, min:restTime})}> 
-    <h1>Vote!</h1>
-    <FaVoteYea  className="voteTime_icon" size="50px"/></button>
 </div>
 }
 {false && <Modal color="deeppink" title="Vote Result">

@@ -46,12 +46,12 @@ export const userState = atom({
   export const isVotingState = atom(
     {
       key:"isVotingState",
-      default:{isVoting:true , min:1}
+      default:{isVoting:false , min:1}
     }
   )
 
 
   export const roomState = atom({
     key: "roomState",
-    default:{}
+    default:{turn:1}
   })

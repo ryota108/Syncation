@@ -1,8 +1,8 @@
 import { type } from 'os';
 import React,{useState,useEffect, useContext} from 'react';
 import classes from "./Timer.module.css";
-import { useRecoilValue,useSetRecoilState } from "recoil";
-import {hostState, initialState, isRestingState, roomState} from "../recoil/atom"
+import { useRecoilValue,useSetRecoilState, useRecoilState } from "recoil";
+import {hostState, initialState, isRestingState, roomState,isVotingState} from "../recoil/atom"
 import { SocketContext } from '../context/SocketProvider';
 
 
@@ -12,23 +12,17 @@ import { SocketContext } from '../context/SocketProvider';
 
 
 function Timer({onHelp}) {
-  const SETTING = "NO_REST";
-  const setting_rest = 2;
   const isResting = useRecoilValue(isRestingState)
-  const timer = useRecoilValue(roomState)
-  const [startTime, setStartTime] = useState(null);
-  const miliTime = timer.time * 60 * 1000 
-  const random = Math.floor(Math.random()*11)
-  const testRest = miliTime + random * 100
-  const initial = useRecoilValue(initialState);
-  const setInitial = useSetRecoilState(initialState);
+  const timer = useRecoilValue(roomState)   // roomInfoの情報
+  const setRoomInfo = useSetRecoilState(roomState)
   const socket = useContext(SocketContext)
-
+  const [voteDone,setVoteDone] = useRecoilState(isVotingState)
+  console.log(timer)
   const timeHandler = (time) => {
     const now = new Date()
     const test = now.getTime()
-    setStartTime(new Date (test));
     const dateDemo = new Date (test)
+    console.log(time)
     const min = dateDemo.setMinutes(dateDemo.getMinutes() + +time )
     return min
   }
@@ -38,10 +32,7 @@ function Timer({onHelp}) {
       return
     }
 
-    const min = timeHandler(timer.timer)
-    console.log(min)
-
-    
+    const min = timeHandler(Number(timer.timer))
     // minをルーム内にいる人に送信する　＋　ミリセカンドの上書き
     socket.emit("send_time", {
       "type": "startTime",
@@ -68,12 +59,78 @@ function Timer({onHelp}) {
     .then(res => console.log(res))
     .catch(err => console.log(err))
 
-    console.log("clickHandler"+ timer.timer);
-    setInitial({isInitial:false})
     onHelp(min)
+    console.log(min)
   }
 
  
+
+  
+
+useEffect(() => {
+  console.log(timer)
+  const isMode = timer.mode;
+  const syncTimeHandler = (additionalTime)=>{
+    const milisecond = timeHandler (timer.timer + additionalTime)
+    fetch(`http://localhost:8000/room/${timer.id}`)
+    .then(res => res.json())
+    .then(res => {
+      console.log(res)
+      res.milisecond = String(milisecond)
+      console.log(res)
+    
+      const requestOptions = {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(res)
+      }
+    
+      return fetch(`http://localhost:8000/room/${timer.id}`, requestOptions)
+    })
+    .then(res => res.json())
+    .then(res => {
+       onHelp(res.milisecond)
+      })
+    .catch(err => console.log(err))
+    }
+    
+  if(isMode === "VOTE"){
+    const voteStateChangeHandler = () => {
+      setVoteDone({...voteDone, isVoting:!voteDone.isVoting})
+    }
+     const fetchVoteResult = () =>{
+  
+     fetch(`http://localhost:8000/room/${timer.id}/vote/${timer.turn}`)
+        .then(res=>res.json())
+        .then(res => {
+          setVoteDone({...voteDone, "vote_time_list": res.vote_time_list})
+          syncTimeHandler(res.res_time)
+        })
+    } 
+    
+    const sleep = (waitSeconds, someFunction) => {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          // console.log("関数実行")
+          // voteStateChangeHandler()
+          resolve(someFunction())
+        }, waitSeconds * 1000)
+      })	
+    }
+    sleep(15,voteStateChangeHandler)
+    sleep(20, fetchVoteResult)
+    .then(() => setRoomInfo({...timer, turn: timer.turn + 1}))
+    }else if(isMode === "REST"){
+     syncTimeHandler(timer.restTime)
+    } else {
+      syncTimeHandler(0)}
+}, [isResting.isResting])
+
+// timeHandler(timer.timer + additionalTime) =>min =>GET =>PUT => PUTのレスポンスを基にonHelp(res.min) 
+// 
+// 
+//
+
 // if(SETTING === "NO_RES"){
 //   useEffect(() => {
 //     const interval = setInterval(() => {
@@ -87,12 +144,7 @@ function Timer({onHelp}) {
 
   // useEffect(() => {
   //   if( isResting.isResting && initial.isInitial){
-  //       const now = new Date()
-  //       const test = now.getTime()
-  //       setStartTime(new Date (test));
-  //       const dateDemo = new Date (test)
-  //       const min = dateDemo.setMinutes(dateDemo.getMinutes() + +timer.time )
-  //       onHelp(min)
+  //      timerHandler()
   //     return () => {}
   //   }  else {
   //   const now = new Date()
