@@ -29,8 +29,6 @@ const Home  = () => {
   const Voting = useRecoilValue(isVotingState);
   const setVoting = useSetRecoilState(isVotingState);
   const socket = useContext(SocketContext)
-
-  console.log(users, roomInfo)
   
 
   // start処理がtrueにする条件
@@ -55,7 +53,6 @@ const Home  = () => {
     fetch(`http://localhost:8000/room/${roomInfo.id}`)
     .then((res) => res.json())
     .then(res => { 
-      console.log(res)
       setRoomInfo(res)
       // ミリ時間の更新
       if (res.milisecond !== "00") {
@@ -64,33 +61,45 @@ const Home  = () => {
       return fetch(`http://localhost:8000/room/${roomInfo.id}/users`)
     })
     .then(res => res.json())
-    .then(res => console.log(res))
+    .then(res => { 
+      console.log(res)
+      const newUsers = res.users.map(user => {
+        
+        return {
+        username: user.User.username, 
+        status: user.User.status,
+        is_host: user.User.is_host,
+        room_id: user.User.room_id
+        }
+      })
+      console.log(newUsers)
+      setUsers([...newUsers])
+    })
     .catch(err => console.log(err))
   }, [])
-
-  // useEffect(() => {
-  //   roomInfo.
-  // }, [])
-
-  /* ルームに入室してきたユーザの情報を取得する */
-  // useEffect(() => {
-  //   fetch(`http://localhost:8000/room/${host.roomId}`)
-  //   .then((res) => res.json())
-  //   .then(res => console.log(res))
-  //   .catch(err => console.log(err))
-  // }, [])
 
 
  /* 途中から参加してきたユーザの情報を取得する */
   useEffect(() => {
     socket.on("joined_room", (data) => {
       console.log(data)
-      setUsers([
-        ...users,
-        {
-          "username": data.username,
-        }
-      ])
+      console.log(users)
+      fetch(`http://localhost:8000/room/${roomInfo.id}/users`)
+      .then(res => res.json())
+      .then(res => {
+        const newUsers = res.users.map(user => {
+        
+          return {
+          username: user.User.username, 
+          status: user.User.status,
+          is_host: user.User.is_host,
+          room_id: user.User.room_id
+          }
+        })
+        console.log(newUsers)
+        setUsers([...newUsers])
+      })
+      .catch(err => console.log(err))
     })
   
     // スタート時にすでにルームに存在するユーザにミリ時間の取得と更新を行う

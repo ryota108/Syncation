@@ -4,7 +4,6 @@ import Router from "next/router";
 import { useRecoilValue, useSetRecoilState, useRecoilState } from "recoil";
 import { MdHowToVote } from "react-icons/md";
 import { SocketContext } from "../context/SocketProvider";
-import { io } from "socket.io-client";
 import { AiOutlinePlus, AiFillSetting, AiOutlineSetting } from "react-icons/ai";
 import { FaTasks, FaUserTie } from "react-icons/fa";
 import { RiArrowRightSLine, RiArrowLeftSLine } from "react-icons/ri";
@@ -70,36 +69,14 @@ function LaunchRoom() {
        socket.emit("join_room", {
         "roomId": res.room_id,
         "username": hostNameRef.current.value
-      }, (response) => {
-      if(response.result === "Success") {
-      setUsers([
-        ...users,
-        {
-        "username": hostNameRef.current.value,
-        "status": "player",
-        "room_id": res.room_id,
-        "is_host": true
-        }])
-      }})
+       }
+      )
 
       /*URLの遷移 */
       Router.push(`/rooms/${res.room_id}`);
     })
     .catch(err => console.log(err))
   
-
-      // setUsers([
-      //   ...users,
-      //   {
-      //     userName: hostNameRef.current.value,
-      //     roomId: "test",
-      //   }
-      // ])
-    
-    // Router.push(`/`);
-    // socket.on("enter", ({user}) => {
-    //   console.log(`${user}がJoinしました。`)
-    // })
   };
 
   const formHandle = (e) => {
