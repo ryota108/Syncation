@@ -3,8 +3,8 @@ import Timer from "../../components/Timer";
 import CountDownTimer from "../../components/CountDownTimer";
 import UserAll from "../../components/UserAll";
 import {IoChatbubblesOutline} from "react-icons/io5"
-import { userState, hostState,isRestingState,isVotingState, userListState } from "../../recoil/atom";
-import {useRecoilValue, useSetRecoilState} from "recoil"
+import { userState, hostState,isRestingState,isVotingState, userListState, roomState } from "../../recoil/atom";
+import {useRecoilValue, useSetRecoilState, useRecoilState} from "recoil"
 import Link from "next/link"
 import Chat from "../../components/Chat"
 import Modal from "../../UI/Modal"
@@ -28,7 +28,9 @@ const Home  = () => {
   const [needRest,setNeedRest] = useState(false);
   const [chatOpen,setChatOpen] = useState(false);
   const [taskOpen,setTaskOpen] = useState(false);
+  const [roomInfo,setRoomInfo] = useRecoilState(roomState);
 
+  const user = useRecoilValue(userState)
   const users = useRecoilValue(userListState)
   const user = useRecoilValue(userState)
   const setUsers = useSetRecoilState(userListState)
@@ -37,8 +39,6 @@ const Home  = () => {
   const Voting = useRecoilValue(isVotingState);
   const setVoting = useSetRecoilState(isVotingState);
   const socket = useContext(SocketContext)
-
-  console.log(users)
 
   // start処理がtrueにする条件
 
@@ -56,8 +56,29 @@ const Home  = () => {
       setTargetTime(time)
      }
   }
+  /* ルームの情報を取得する */
+  useEffect(() => {
+    console.log(roomInfo.id)
+    fetch(`http://localhost:8000/room/${roomInfo.id}`)
+    .then((res) => res.json())
+    .then(res => { 
+      console.log(res)
+      setRoomInfo(res)
+      return fetch(`http://localhost:8000/room/${roomInfo.id}/users`)
+    })
+    .then(res => res.json())
+    .then(res => console.log(res))
+    .catch(err => console.log(err))
+  }, [])
 
   /* ルームに入室してきたユーザの情報を取得する */
+  // useEffect(() => {
+  //   fetch(`http://localhost:8000/room/${host.roomId}`)
+  //   .then((res) => res.json())
+  //   .then(res => console.log(res))
+  //   .catch(err => console.log(err))
+  // }, [])
+
 
   // socket.emit("entered_room", {"username": host.hostName})
   socket.on("joined_room", (data) => {
