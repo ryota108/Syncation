@@ -5,7 +5,16 @@
 }
 
 .taskTitle {
+  font-size: 1.3rem;
+  color: aquamarine;
+}
+
+.taskTitleDone {
   text-decoration: line-through;
   font-size: 1.3rem;
   color: aquamarine;
+}
+
+.checkBox {
+  
 }
