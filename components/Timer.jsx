@@ -10,6 +10,9 @@ import { SocketContext } from '../context/SocketProvider';
 // input =>追加分数を入れている
 // 休憩したい時間分＝＞インターバルの引数 =>timestampの発行 <=初回のみ rest = true 
 
+// 問題
+// 1undefinged 25行目
+
 
 function Timer({onHelp}) {
   const isResting = useRecoilValue(isRestingState)
@@ -17,13 +20,11 @@ function Timer({onHelp}) {
   const setRoomInfo = useSetRecoilState(roomState)
   const socket = useContext(SocketContext)
   const [voteDone,setVoteDone] = useRecoilState(isVotingState)
-  console.log(timer)
   const timeHandler = (time) => {
     const now = new Date()
     const test = now.getTime()
     const dateDemo = new Date (test)
-    console.log(time)
-    const min = dateDemo.setMinutes(dateDemo.getMinutes() + +time )
+    const min = dateDemo.setMinutes(dateDemo.getMinutes() + Number(time) )
     return min
   }
   
@@ -33,19 +34,12 @@ function Timer({onHelp}) {
     }
 
     const min = timeHandler(Number(timer.timer))
-    // minをルーム内にいる人に送信する　＋　ミリセカンドの上書き
-    socket.emit("send_time", {
-      "type": "startTime",
-      "time": String(min),
-      "roomId": timer.id
-    })
 
     fetch(`http://localhost:8000/room/${timer.id}`)
     .then(res => res.json())
     .then(res => {
-      console.log(res)
       res.milisecond = String(min)
-      console.log(res)
+      // console.log(res)
 
       const requestOptions = {
         method: 'PUT',
@@ -56,11 +50,17 @@ function Timer({onHelp}) {
       return fetch(`http://localhost:8000/room/${timer.id}`, requestOptions)
     })
     .then(res => res.json())
-    .then(res => console.log(res))
+    .then(res => { 
+      console.table(res)
+      onHelp(res.milisecond)
+      // minをルーム内にいる人に送信する　＋　ミリセカンドの上書き
+      socket.emit("send_time", {
+        "type": "startTime",
+        "time": String(res.milisecond),
+        "roomId": timer.id
+      })
+    })
     .catch(err => console.log(err))
-
-    onHelp(min)
-    console.log(min)
   }
 
  
@@ -68,7 +68,6 @@ function Timer({onHelp}) {
   
 
 useEffect(() => {
-  console.log(timer)
   const isMode = timer.mode;
   const syncTimeHandler = (additionalTime)=>{
     const milisecond = timeHandler (timer.timer + additionalTime)
@@ -122,7 +121,8 @@ useEffect(() => {
     .then(() => setRoomInfo({...timer, turn: timer.turn + 1}))
     }else if(isMode === "REST"){
      syncTimeHandler(timer.restTime)
-    } else {
+    } else if(isMode === "NO_REST") {
+      console.log("elseが実行")
       syncTimeHandler(0)}
 }, [isResting.isResting])
 

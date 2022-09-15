@@ -57,12 +57,11 @@ const Home  = () => {
   }
   /* ルームの情報を取得する */
   useEffect(() => {
-    console.log(roomInfo.id)
     fetch(`http://localhost:8000/room/${roomInfo.id}`)
     .then((res) => res.json())
     .then(res => { 
-      console.log(res)
-      setRoomInfo({...roomInfo, ...res})
+      console.log(res)                    // milisecondにNaNが入っている
+      setRoomInfo({...roomInfo, ...res}) // milisecondにNaNが入っている
       // ミリ時間の更新
       if (res.milisecond !== "00") {
         setTargetTime(Number(res.milisecond))
@@ -71,7 +70,6 @@ const Home  = () => {
     })
     .then(res => res.json())
     .then(res => { 
-      console.log(res)
       const newUsers = res.users.map(user => {
         
         return {
@@ -81,18 +79,15 @@ const Home  = () => {
         room_id: user.User.room_id
         }
       })
-      console.log(newUsers)
       setUsers([...newUsers])
     })
     .catch(err => console.log(err))
   }, [])
 
-  console.log(roomInfo)
+  // console.log(roomInfo)
  /* 途中から参加してきたユーザの情報を取得する */
   useEffect(() => {
     socket.on("joined_room", (data) => {
-      console.log(data)
-      console.log(users)
       fetch(`http://localhost:8000/room/${roomInfo.id}/users`)
       .then(res => res.json())
       .then(res => {
@@ -105,7 +100,6 @@ const Home  = () => {
           room_id: user.User.room_id
           }
         })
-        console.log(newUsers)
         setUsers([...newUsers])
       })
       .catch(err => console.log(err))
@@ -113,12 +107,12 @@ const Home  = () => {
   
     // スタート時にすでにルームに存在するユーザにミリ時間の取得と更新を行う
     socket.on("receive_time", (data) => {
-      console.log("時間: " + data.time + "ミリ秒")
+      console.log(data.time)
       setTargetTime(Number(data.time))
     })
   }, [])
 
-  console.log(voteDone.isVoting)
+  
   if(voteDone.isVoting){
     const requestOptions = {
       method: 'POST',
@@ -250,7 +244,6 @@ const Home  = () => {
 {taskOpen && <Modal color="lightGreen" title="Task"><UserTaskAll/></Modal>}
   <UserAll/>
   <Link href="/login">login</Link>
-  <Link href="/launchRoom">host</Link>
     </>
   )
 }

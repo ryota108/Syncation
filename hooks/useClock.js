@@ -1,4 +1,4 @@
-import { useEffect, useState, y } from 'react';
+import { useEffect, useState } from 'react';
 
 const useClock = (targetDate) => {
 
@@ -8,7 +8,6 @@ const useClock = (targetDate) => {
   useEffect(() => {
   if(countDown <= 1000){
     return () => { 
-      setCountDown(targetDate - new Date().getTime());
       return getReturnValues(0)}
   } else {
     const interval = setInterval(() => {
