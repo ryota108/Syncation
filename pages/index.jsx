@@ -11,7 +11,7 @@ import{TbReportAnalytics} from "react-icons/tb";
 import{GiImperialCrown} from "react-icons/gi";
 import {useState} from "react"
 import Modal from "../UI/Modal";
-import Shuffle from "../components/Shuffle"
+
 
 const Home  = () => {
 
@@ -125,7 +125,6 @@ const Home  = () => {
     {chat && <Modal title="Chat">
       <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
     </Modal>}
-    <Shuffle/>
 
     <div className="btn blue">
             <Link href="login">Join Room </Link>

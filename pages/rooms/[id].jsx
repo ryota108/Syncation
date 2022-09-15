@@ -1,35 +1,44 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState ,useEffect } from "react";
 import Timer from "../../components/Timer";
 import CountDownTimer from "../../components/CountDownTimer";
 import UserAll from "../../components/UserAll";
-import { userState, hostState,isRestingState,isVotingState, userListState,roomState} from "../../recoil/atom";
+import {IoChatbubblesOutline} from "react-icons/io5"
+import { userState, hostState,isRestingState,isVotingState, userListState, roomState } from "../../recoil/atom";
 import {useRecoilValue, useSetRecoilState, useRecoilState} from "recoil"
 import Link from "next/link"
+import Chat from "../../components/Chat"
+import Modal from "../../UI/Modal"
 import { SocketContext } from "../../context/SocketProvider";7
 // import {socket} from '../launchRoom'
 import Shuffle from "../../components/Shuffle";
 import { MdHowToVote } from "react-icons/md";
 import { FaVoteYea } from "react-icons/fa";
+import {GrAnnounce} from "react-icons/gr"
+import {BiTask} from "react-icons/bi";
 import Image from "next/image"
 import RoomStatus from "../../components/RoomStatus";
 import Notification from "../../components/Notification";
+import UserTaskAll from "../../components/UserTaskAll";
 
 
 const Home  = () => {
+  
   const [restTime,setRestTime] = useState(0);
   const [targetTime, setTargetTime] = useState()
   const [needRest,setNeedRest] = useState(false);
+  const [chatOpen,setChatOpen] = useState(false);
+  const [taskOpen,setTaskOpen] = useState(false);
   const [roomInfo,setRoomInfo] = useRecoilState(roomState);
 
   const user = useRecoilValue(userState)
   const users = useRecoilValue(userListState)
+  const user = useRecoilValue(userState)
   const setUsers = useSetRecoilState(userListState)
   const host  = useRecoilValue(hostState)
   const isResting = useRecoilValue(isRestingState);
   const Voting = useRecoilValue(isVotingState);
   const setVoting = useSetRecoilState(isVotingState);
   const socket = useContext(SocketContext)
-  
 
   // start処理がtrueにする条件
 
@@ -116,6 +125,7 @@ const Home  = () => {
  } else {
    voteStatus = "on"
  }
+
   return (
     <>
     {/* isResting.isResting */}
@@ -148,7 +158,22 @@ const Home  = () => {
     <button className="voteTimeBtn" onClick={()=> setVoting({isVoting :false, min:restTime})}> 
     <h1>Vote!</h1>
     <FaVoteYea  className="voteTime_icon" size="50px"/></button>
-</div>}
+</div>
+}
+{false && <Modal color="deeppink" title="Vote Result">
+  <div style={{display:"flex", justifyContent:"space-evenly"}}>
+<div className={false ? "needRest": "needRest_off"} >
+ <Image src="/study.png" width="200px" height="200px"/>
+ <h1 className="rest_no">No</h1>
+  </div>
+ <div className={true ? "needRest": "needRest_off"} >
+ <Image src="/rest.png" width="200px" height="200px"/>
+ <h1 className="rest_yes">Yes</h1>
+ </div>
+  </div>
+  <p className="resultMin_title">Result min</p>
+  <Shuffle style= {{marginLeft:"10%"}}/>
+  </Modal>}
 <Notification/>
 {/* <h1 className={!isResting.isResting ? "demo right": "demo right light_off"}>
   <span>W</span>
@@ -171,6 +196,14 @@ const Home  = () => {
 <CountDownTimer targetDate={targetTime}/>
   <Timer onHelp ={submitHandler}  />
 <RoomStatus userCount={count} timer={host.time} votingStatus={voteStatus} restTime={host.isResting}/>
+<div className="chatBtn" onClick={()=>{setChatOpen(!chatOpen)}}>
+<IoChatbubblesOutline  size="50px"/>
+</div>
+<div className="taskBtn" onClick={()=>{setTaskOpen(!taskOpen)}}>
+<BiTask  size="50px"/>
+</div>
+{chatOpen && <Modal><Chat/></Modal>}
+{taskOpen && <Modal color="lightGreen" title="Task"><UserTaskAll/></Modal>}
   <UserAll/>
   <Link href="/login">login</Link>
   <Link href="/launchRoom">host</Link>

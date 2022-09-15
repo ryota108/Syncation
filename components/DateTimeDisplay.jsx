@@ -10,7 +10,7 @@ const DateTimeDisplay = ({ value , type , isDanger }) => {
   return (
     <div className={isDanger ? 'countdown danger' : 'countdown'}>
       <p className={classes.number}>{value}</p>
-      <span className={classes.type}>{type}</span>
+      {/* <span className={classes.type}>{type}</span> */}
     </div>
   );
 };

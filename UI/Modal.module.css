@@ -8,14 +8,18 @@
   left: 10px;
   right: 10px;
   background-color: black;
-  border: 2px solid violet;
   border-radius: 5%;
   z-index: 10;
   animation-name: fadeUpAnime;
   animation-duration: 0.5s;
   animation-fill-mode: forwards;
   opacity: 0;
-  box-shadow: 0px 0px 50px violet;
+}
+
+
+.title {
+  text-align: center;
+  font-size: 2rem;
 }
 
 @keyframes fadeUpAnime {

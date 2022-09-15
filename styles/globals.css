@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap");
-
+@import url('https://fonts.googleapis.com/css2?family=Sawarabi+Mincho&display=swap');
 body {
   margin: 0;
   padding: 0;
@@ -24,7 +24,7 @@ button {
   font-size: 20px;
   overflow: hidden;
   transition: 0.5s;
-  font-family: "Orbitron", sans-serif;
+  font-family: "Orbitron", "Sawarabi Mincho";
   -webkit-box-reflect: below 1px
     linear-gradient(transparent, rgba(0, 0, 0, 0.144));
 }
@@ -53,7 +53,7 @@ button {
   font-size: 20px;
   overflow: hidden;
   transition: 0.5s;
-  font-family: "Orbitron", sans-serif;
+  font-family: "Orbitron", "Sawarabi Mincho";
   -webkit-box-reflect: below 1px
     linear-gradient(transparent, rgba(0, 0, 0, 0.144));
 }
@@ -91,7 +91,7 @@ circle {
   color: var(--color, white);
   display: inline-flex;
   flex-direction: column;
-  font-family: system-ui, sans-serif;
+  font-family: system-ui, "Sawarabi Mincho";
   height: var(--size);
   justify-content: space-around;
   padding: 1rem;
@@ -106,11 +106,11 @@ circle {
 }
 .gas .symbol {
   font-size: 4rem;
-  font-family: "Orbitron", sans-serif;
+  font-family: "Orbitron", "Sawarabi Mincho";
   text-shadow: 0 0 var(--blur) var(--glow);
 }
 .name {
-  font-family: "Orbitron", sans-serif;
+  font-family: "Orbitron", "Sawarabi Mincho";
 }
 .gas.he {
   --color: #fceaac;
@@ -167,13 +167,13 @@ circle {
 }
 
 h1 {
-  font-family: "Orbitron", sans-serif;
+  font-family: "Orbitron", "Sawarabi Mincho";
   color: #5ce1e6;
   text-shadow: 0 0 15px #5ce1e6;
 }
 
 p {
-  font-family: "Orbitron", sans-serif;
+  font-family: "Orbitron", "Sawarabi Mincho";
   color: #5ce1e6;
   text-shadow: 0 0 5px #5ce1e6;
 }
@@ -184,11 +184,11 @@ input {
   color: #5ce1e6;
   outline: none;
   display: block;
-  font-family: "Orbitron", sans-serif;
+  font-family: "Orbitron", "Sawarabi Mincho";
 }
 
 label {
-  font-family: "Orbitron", sans-serif;
+  font-family: "Orbitron", "Sawarabi Mincho";
   color: #5ce1e6;
   text-shadow: 0 0 5px #5ce1e6;
 }
@@ -381,7 +381,7 @@ label {
   filter: drop-shadow(0px 0px 10px #5ce1e6);
 }
 .function_explain,.vote_explain {
-  font-family: "Orbitron", sans-serif;
+  font-family: "Orbitron", "Sawarabi Mincho";
   color: #e555c7;
   text-shadow: 0 0 5px #e555c7;
   text-align: center;
@@ -479,7 +479,7 @@ label {
 
 
 .sync_explain {
-  font-family: "Orbitron", sans-serif;
+  font-family: "Orbitron", "Sawarabi Mincho";
   color: #5ce1e6;
   text-shadow: 0 0 5px #5ce1e6;
   text-align: center;
@@ -491,7 +491,7 @@ label {
   filter: drop-shadow(10px 10px 10px #5ce1e6);
 }
 .motivation_explain {
-  font-family: "Orbitron", sans-serif;
+  font-family: "Orbitron", "Sawarabi Mincho";
   color: #5ce1e6;
   text-shadow: 0 0 5px #5ce1e6;
   text-align: center;
@@ -631,7 +631,7 @@ label {
   box-shadow: 0px 0px 50px #e555c7;
   margin-left: 40%;
   font-size: 1.5rem;
-  font-family: "Orbitron", sans-serif;
+  font-family: "Orbitron", "Sawarabi Mincho";
   display: flex;
   align-items: center;
   transition: 0.5s;
@@ -979,11 +979,19 @@ label {
   justify-content: space-evenly;
 }
 
+.resultMin_title {
+  color: deeppink;
+  text-shadow: 0px 0px 20px deeppink;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
 .card {
   border: 2px solid #e555c7;
   min-width: 100px;
   background-color: #e555c7;
   box-shadow: 0px 0px 5px #e555c7;
+  user-select: none;
   border-radius: 5%;
   margin-bottom: 20px;
   margin: 10px 10px;
@@ -996,6 +1004,7 @@ label {
 .card_wrapper {
   display: flex;
   flex-wrap: wrap;
+  margin-left: 10%;
 }
 
 .card > p {
@@ -1078,7 +1087,6 @@ label {
   }
   100% {
     transform: translateX(0);
-    position: absolute;
   }
   40%,100% {
     opacity: 1;
@@ -1113,4 +1121,59 @@ label {
 
 .loginBtn{
   margin: 20px;
+}
+
+.taskBtn {
+border:2px solid lightgreen;
+box-shadow: 0px 0px 20px lightgreen;
+border-radius: 100px;
+padding: 10px;
+width: 60px;
+transition: 0.5s;
+}
+
+.chatBtn {
+border:2px solid deeppink;
+box-shadow: 0px 0px 20px deeppink;
+border-radius: 100px;
+padding: 10px;
+width: 60px;
+transition: 0.5s;
+}
+
+.chatBtn:hover {
+  background-color: deeppink;
+}
+
+.taskBtn:hover {
+  background-color: lightgreen;
+}
+
+.taskBtn > svg {
+  color: lightgreen;
+  margin-left: 3px;
+  transition: 0.5s;
+}
+
+.taskBtn:hover.taskBtn > svg {
+  color: white;
+} 
+
+
+
+.chatBtn_container > p {
+  font-size: 1.2rem;
+  color: deeppink;
+  text-shadow:none;
+  margin-left: 15px;
+}
+
+.chatBtn > svg {
+  color: deeppink;
+  margin-left: 3px;
+  transition: 0.5s;
+}
+
+.chatBtn:hover.chatBtn > svg {
+  color: white !important;
 }
