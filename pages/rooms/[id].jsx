@@ -32,7 +32,6 @@ const Home  = () => {
 
   const user = useRecoilValue(userState)
   const users = useRecoilValue(userListState)
-  const user = useRecoilValue(userState)
   const setUsers = useSetRecoilState(userListState)
   const host  = useRecoilValue(hostState)
   const isResting = useRecoilValue(isRestingState);
@@ -62,37 +61,61 @@ const Home  = () => {
     fetch(`http://localhost:8000/room/${roomInfo.id}`)
     .then((res) => res.json())
     .then(res => { 
-      console.log(res)
       setRoomInfo(res)
+      // ミリ時間の更新
+      if (res.milisecond !== "00") {
+        setTargetTime(Number(res.milisecond))
+      }
       return fetch(`http://localhost:8000/room/${roomInfo.id}/users`)
     })
     .then(res => res.json())
-    .then(res => console.log(res))
+    .then(res => { 
+      console.log(res)
+      const newUsers = res.users.map(user => {
+        
+        return {
+        username: user.User.username, 
+        status: user.User.status,
+        is_host: user.User.is_host,
+        room_id: user.User.room_id
+        }
+      })
+      console.log(newUsers)
+      setUsers([...newUsers])
+    })
     .catch(err => console.log(err))
   }, [])
 
-  /* ルームに入室してきたユーザの情報を取得する */
-  // useEffect(() => {
-  //   fetch(`http://localhost:8000/room/${host.roomId}`)
-  //   .then((res) => res.json())
-  //   .then(res => console.log(res))
-  //   .catch(err => console.log(err))
-  // }, [])
 
-
-  // socket.emit("entered_room", {"username": host.hostName})
-  socket.on("joined_room", (data) => {
-    console.log(data)
-    setUsers([
-      ...users,
-      {
-        "username": data.username,
-      }
-    ])
-  })
-  // socket.on("joined_room", (data) => {
-  //   console.log("ID: " + data.id + "ユーザ名: " + data.username)
-  // })
+ /* 途中から参加してきたユーザの情報を取得する */
+  useEffect(() => {
+    socket.on("joined_room", (data) => {
+      console.log(data)
+      console.log(users)
+      fetch(`http://localhost:8000/room/${roomInfo.id}/users`)
+      .then(res => res.json())
+      .then(res => {
+        const newUsers = res.users.map(user => {
+        
+          return {
+          username: user.User.username, 
+          status: user.User.status,
+          is_host: user.User.is_host,
+          room_id: user.User.room_id
+          }
+        })
+        console.log(newUsers)
+        setUsers([...newUsers])
+      })
+      .catch(err => console.log(err))
+    })
+  
+    // スタート時にすでにルームに存在するユーザにミリ時間の取得と更新を行う
+    socket.on("receive_time", (data) => {
+      console.log("時間: " + data.time + "ミリ秒")
+      setTargetTime(Number(data.time))
+    })
+  }, [])
   
   const oneMinHandler = () =>{
     setRestTime(1)

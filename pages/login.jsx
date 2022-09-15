@@ -1,20 +1,16 @@
 import React , {useContext, useRef} from 'react'
 import classes from "../styles/login.module.css";
 import Router from "next/router"
-import {BsDoorOpenFill,BsDoorOpen} from "react-icons/bs";
-import {useRecoilValue,useSetRecoilState,useRecoilState} from "recoil"
-import {userListState, userState,room, roomState} from '../recoil/atom'
+import {BsDoorOpenFill } from "react-icons/bs";
+import { useRecoilState } from "recoil"
+import { roomState} from '../recoil/atom'
 import { SocketContext } from '../context/SocketProvider';
 
 
 function Login() {
 
-  const test = useRecoilValue(userState);
-  const setTest = useSetRecoilState(userState);
   const userRef = useRef(null)
   const roomRef = useRef(null)
-  const users = useRecoilValue(userListState)
-  const setUsers = useSetRecoilState(userListState)
   const [roomInfo, setRoomInfo] = useRecoilState(roomState)
 
   const socket = useContext(SocketContext)
@@ -22,10 +18,6 @@ function Login() {
   
  
   const submitHandle = ()=>{
-    // context でグローバル化にする
-    // socket.on("recieve_left_time", (data) => {
-
-    // })
 
     const requestOptions = {
       method: 'POST',
@@ -36,25 +28,16 @@ function Login() {
             "status": "player",
             "room_id": roomRef.current.value,
             "is_host": false
-          }        
-      )
-  };
+        }        
+      )};
 
-  fetch('http://localhost:8000/user', requestOptions)
+    fetch('http://localhost:8000/user', requestOptions)
       .then(response => response.json())
       .then(res => { 
         console.log(res)
       })
       .catch(err => console.log(err))
-    console.log(roomRef.current.value)
-    // setTest([...test ,{id:1,userName:userRef.current.value,progress:0}])
-    setUsers([
-      ...users,
-      {
-        "username": userRef.current.value,
-        "roomId": "test"
-      }
-    ])
+
     setRoomInfo({id: roomRef.current.value})
     socket.emit("join_room", {
       "roomId": roomRef.current.value,
