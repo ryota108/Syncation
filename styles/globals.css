@@ -1177,3 +1177,10 @@ transition: 0.5s;
 .chatBtn:hover.chatBtn > svg {
   color: white !important;
 }
+
+.progressNotice {
+  color: greenyellow;
+  font-size: 3rem;
+  text-align: center;
+  text-shadow: 0px 0px 20px greenyellow;
+}

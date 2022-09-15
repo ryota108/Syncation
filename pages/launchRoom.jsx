@@ -5,7 +5,7 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import { MdHowToVote } from "react-icons/md";
 import { SocketContext } from "../context/SocketProvider";
 import { io } from "socket.io-client";
-import { AiOutlinePlus, AiFillSetting, AiOutlineSetting } from "react-icons/ai";
+import { AiOutlinePlus, AiOutlineSetting } from "react-icons/ai";
 import { FaTasks, FaUserTie } from "react-icons/fa";
 import { RiArrowRightSLine, RiArrowLeftSLine } from "react-icons/ri";
 import { IoTimerOutline } from "react-icons/io5";

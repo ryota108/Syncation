@@ -1,7 +1,7 @@
 import React from 'react';
 import classes from "./User.module.css";
 
-function User({userName , done}) {
+function User({userName , done ,isHost}) {
 if(typeof userName === "undefined") {
   return
 }
