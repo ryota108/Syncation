@@ -2,7 +2,7 @@ import { type } from 'os';
 import React,{useState,useEffect, useContext} from 'react';
 import classes from "./Timer.module.css";
 import { useRecoilValue,useSetRecoilState, useRecoilState } from "recoil";
-import {hostState, initialState, isRestingState, roomState,isVotingState} from "../recoil/atom"
+import {hostState, initialState, isRestingState, roomState,isVotingState, voteMinState} from "../recoil/atom"
 import { SocketContext } from '../context/SocketProvider';
 
 
@@ -14,8 +14,9 @@ import { SocketContext } from '../context/SocketProvider';
 // 1undefinged 25行目
 
 
-function Timer({onHelp}) {
+function Timer({onHelp, fetchVoteResting}) {
   const isResting = useRecoilValue(isRestingState)
+  const restTime = useRecoilValue(voteMinState)
   const timer = useRecoilValue(roomState)   // roomInfoの情報
   const setRoomInfo = useSetRecoilState(roomState)
   const socket = useContext(SocketContext)
@@ -68,9 +69,16 @@ function Timer({onHelp}) {
   
 
 useEffect(() => {
+  if(isResting.isResting === false){
+    return ()=>{}
+  }
   const isMode = timer.mode;
   const syncTimeHandler = (additionalTime)=>{
-    const milisecond = timeHandler (timer.timer + additionalTime)
+    console.log("休憩"+ additionalTime + "ワーキング" + Number(timer.timer))
+    const sum = additionalTime + Number(timer.timer)
+    console.log("合計" + sum)
+    const milisecond = timeHandler(String(sum))
+    console.log(milisecond)
     fetch(`http://localhost:8000/room/${timer.id}`)
     .then(res => res.json())
     .then(res => {
@@ -88,6 +96,7 @@ useEffect(() => {
     })
     .then(res => res.json())
     .then(res => {
+      console.log(res)
        onHelp(res.milisecond)
       })
     .catch(err => console.log(err))
@@ -97,30 +106,55 @@ useEffect(() => {
     const voteStateChangeHandler = () => {
       setVoteDone({...voteDone, isVoting:!voteDone.isVoting})
     }
+    voteStateChangeHandler()
      const fetchVoteResult = () =>{
-  
-     fetch(`http://localhost:8000/room/${timer.id}/vote/${timer.turn}`)
+     return fetch(`http://localhost:8000/room/${timer.id}/vote/${timer.turn}`)
         .then(res=>res.json())
         .then(res => {
+          console.log(res)
           setVoteDone({...voteDone, "vote_time_list": res.vote_time_list})
-          syncTimeHandler(res.res_time)
-        })
+          syncTimeHandler(Number(res.res_time))})
     } 
     
-    const sleep = (waitSeconds, someFunction) => {
+    const sleep = (waitSeconds) => {
       return new Promise((resolve, reject) => {
         setTimeout(() => {
-          // console.log("関数実行")
-          // voteStateChangeHandler()
-          resolve(someFunction())
+          console.log("setTimeout関数実行")
+          voteStateChangeHandler()
+          resolve()
         }, waitSeconds * 1000)
       })	
     }
-    sleep(15,voteStateChangeHandler)
-    sleep(20, fetchVoteResult)
+
+    sleep(15)
+    .then(() => {
+      console.log("これからPOST実行")
+      // return fetchVoteResting(restTime)
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(
+          {
+            "time": String(2),
+            "room_id": timer.id,
+            "rest_flag": true,
+            "turn": timer.turn
+          }
+        )};
+        
+      return fetch(`http://localhost:8000/room/${timer.id}/vote/${timer.turn}`, requestOptions)
+    })
+    .then((res)=> {
+      console.log(res)
+      setVoteDone({...voteDone, isVoting: false})
+      console.log("これからGET実行")
+      return fetchVoteResult()
+    })
     .then(() => setRoomInfo({...timer, turn: timer.turn + 1}))
+    // sleep(20, fetchVoteResult)
+    // .then(() => setRoomInfo({...timer, turn: timer.turn + 1}))
     }else if(isMode === "REST"){
-     syncTimeHandler(timer.restTime)
+     syncTimeHandler(Number(timer.restTime))
     } else if(isMode === "NO_REST") {
       console.log("elseが実行")
       syncTimeHandler(0)}

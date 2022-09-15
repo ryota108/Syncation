@@ -50,6 +50,11 @@ export const userState = atom({
     }
   )
 
+  export const voteMinState = atom({
+    key: "voteMinState",
+    default: 0
+  })
+
 
   export const roomState = atom({
     key: "roomState",

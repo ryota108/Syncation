@@ -45,7 +45,8 @@ function LaunchRoom() {
               "username": hostNameRef.current.value,
               "status": "player",
               "room_id": "string",
-              "is_host": true
+              "is_host": true,
+              "progress": 0
             },
             "request_room": {
               "host_id": "string",

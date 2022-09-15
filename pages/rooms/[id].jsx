@@ -3,7 +3,7 @@ import Timer from "../../components/Timer";
 import CountDownTimer from "../../components/CountDownTimer";
 import UserAll from "../../components/UserAll";
 import {IoChatbubblesOutline} from "react-icons/io5"
-import { userState, hostState,isRestingState,isVotingState, userListState, roomState } from "../../recoil/atom";
+import { userState, hostState,isRestingState,isVotingState, userListState, roomState, voteMinState } from "../../recoil/atom";
 import {useRecoilValue, useSetRecoilState, useRecoilState} from "recoil"
 import Link from "next/link"
 import Chat from "../../components/Chat"
@@ -23,7 +23,8 @@ import UserTaskAll from "../../components/UserTaskAll";
 
 const Home  = () => {
   
-  const [restTime,setRestTime] = useState(0);
+  // const [restTime,setRestTime] = useState(0);
+  const [restTime, setRestTime] = useRecoilState(voteMinState)
   const [targetTime, setTargetTime] = useState()
   const [needRest,setNeedRest] = useState(false);
   const [chatOpen,setChatOpen] = useState(false);
@@ -112,29 +113,40 @@ const Home  = () => {
     })
   }, [])
 
-  
-  if(voteDone.isVoting){
-    const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(
-        {
-          "time": restTime,
-          "room_id": roomInfo.id,
-          "rest_flag": false,
-          "turn": roomInfo.turn
-        }
-      )};
-    
-    fetch(`http://localhost:8000/room/${roomInfo.id}/vote/${roomInfo.turn}`, requestOptions)
-    .then(response => response.json())
-    .then(res => {
-      console.log(res)
-      setVoteDone({...voteDone, isVoting: false})
-    })
+  console.log(restTime)
+  const voteResting = async (time) => {
+      console.log(time)
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(
+          {
+            "time": String(time),
+            "room_id": roomInfo.id,
+            "rest_flag": true,
+            "turn": roomInfo.turn
+          }
+        )};
+      console.log(voteDone.isVoting)
+      console.log("関数が呼ばれている")
+      return fetch(`http://localhost:8000/room/${roomInfo.id}/vote/${roomInfo.turn}`, requestOptions)
+      // .then(response => response.json())
+      // .then(res => {
+      //   console.log(res)
+      //   setVoteDone({...voteDone, isVoting: false})
+      //   return new Promise((resolve, rejected) => {
+      //     console.log("POST実行")
+      //     if(res) {
+      //       resolve("POST成功")
+      //     } else {
+      //       rejected("POST実行でエラー")
+      //     }
+      //   })
+      // })
   }
   
   const oneMinHandler = () =>{
+    console.log("クリックされた")
     setRestTime(1)
   }
   const threeMinHandler = () =>{
@@ -170,7 +182,7 @@ const Home  = () => {
     <>
     {/* isResting.isResting */}
     {console.log(isResting.isResting, voteDone.isVoting)}
-{(isResting.isResting && !voteDone.isVoting) && <div className="voteModal">
+{(voteDone.isVoting) && <div className="voteModal">
  <h1 className="voteTitle"><MdHowToVote />Vote time</h1> 
  <div className="rest_choice">
   <div className={!needRest ? "needRest": "needRest_off"} onClick={needNotRestHandler}>
@@ -232,7 +244,7 @@ const Home  = () => {
   <span>g</span>
 </h1> */}
 <CountDownTimer targetDate={targetTime}/>
-  <Timer onHelp ={submitHandler}  />
+  <Timer onHelp ={submitHandler}  fetchVoteResting={voteResting} restTime={restTime}/>
 <RoomStatus userCount={count} timer={host.time} votingStatus={voteStatus} restTime={host.isResting}/>
 <div className="chatBtn" onClick={()=>{setChatOpen(!chatOpen)}}>
 <IoChatbubblesOutline  size="50px"/>
