@@ -277,14 +277,20 @@ const Home  = () => {
   <span>g</span>
 </h1> */}
 <CountDownTimer targetDate={targetTime}/>
-  <Timer onHelp ={submitHandler} />
+<Timer onHelp ={submitHandler} />
 <RoomStatus userCount={count} timer={host.time} votingStatus={voteStatus} restTime={host.isResting}/>
-<div className="chatBtn" onClick={()=>{setChatOpen(!chatOpen)}}>
-<IoChatbubblesOutline  size="50px"/>
-</div>
-<div className="taskBtn" onClick={()=>{setTaskOpen(!taskOpen)}}>
-<BiTask  size="50px"/>
-</div>
+{isResting.isResting && 
+(
+<>
+  <div className="chatBtn" onClick={()=>{setChatOpen(!chatOpen)}}>
+    <IoChatbubblesOutline  size="50px"/>
+  </div>
+  <div className="taskBtn" onClick={()=>{setTaskOpen(!taskOpen)}}>
+    <BiTask  size="50px"/>
+  </div>
+</> 
+)
+}
 {chatOpen && <Modal><Chat/></Modal>}
 {taskOpen && <Modal color="lightGreen" title="Task"><UserTaskAll/></Modal>}
   <UserAll/>
