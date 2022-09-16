@@ -46,14 +46,24 @@ export const userState = atom({
   export const isVotingState = atom(
     {
       key:"isVotingState",
-      default:{isVoting:false , min:1}
+      default:{
+        isVoting:false , 
+        isLoading: false,
+        isResult: false,
+        min:1
+      }
     }
   )
 
   export const voteMinState = atom({
     key: "voteMinState",
-    default: 0
+    default: 3
   })
+
+  // export const voteResultState = atom({
+  //   key: "voteResultState",
+  //   default: { isResult: false, isLoading: false }
+  // })
 
 
   export const roomState = atom({

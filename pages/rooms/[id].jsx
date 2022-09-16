@@ -3,7 +3,7 @@ import Timer from "../../components/Timer";
 import CountDownTimer from "../../components/CountDownTimer";
 import UserAll from "../../components/UserAll";
 import {IoChatbubblesOutline} from "react-icons/io5"
-import { userState, hostState,isRestingState,isVotingState, userListState, roomState, voteMinState } from "../../recoil/atom";
+import { userState, hostState,isRestingState,isVotingState, userListState, roomState, voteMinState, voteResultState} from "../../recoil/atom";
 import {useRecoilValue, useSetRecoilState, useRecoilState} from "recoil"
 import Link from "next/link"
 import Chat from "../../components/Chat"
@@ -19,19 +19,20 @@ import Image from "next/image"
 import RoomStatus from "../../components/RoomStatus";
 import Notification from "../../components/Notification";
 import UserTaskAll from "../../components/UserTaskAll";
+import { timeHandler } from "../../components/helper/timeHelper";
 
 
 const Home  = () => {
   
   // const [restTime,setRestTime] = useState(0);
   const [restTime, setRestTime] = useRecoilState(voteMinState)
-  const [targetTime, setTargetTime] = useState()
+  // const [isVoteResult, setIsVoteResult] = useRecoilState(voteResultState)
+  const [targetTime, setTargetTime] = useState();
   const [needRest,setNeedRest] = useState(false);
   const [chatOpen,setChatOpen] = useState(false);
   const [taskOpen,setTaskOpen] = useState(false);
   const [roomInfo,setRoomInfo] = useRecoilState(roomState);
   const [voteDone,setVoteDone] = useRecoilState(isVotingState);
-
 
   const user = useRecoilValue(userState)
   const users = useRecoilValue(userListState)
@@ -49,6 +50,14 @@ const Home  = () => {
   const needNotRestHandler = () =>{
     setRestTime(0);
     setNeedRest(false)
+  }
+
+  const restTimerHandler = (time) => {
+    setVoteDone({...voteDone, isResult: !voteDone.isResult})
+    console.log(time)
+    const min = timeHandler(time)
+    console.log(min)
+    setTargetTime(min)
   }
   
   const submitHandler  = (time) =>{
@@ -113,37 +122,37 @@ const Home  = () => {
     })
   }, [])
 
-  console.log(restTime)
-  const voteResting = async (time) => {
-      console.log(time)
-      const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(
-          {
-            "time": String(time),
-            "room_id": roomInfo.id,
-            "rest_flag": true,
-            "turn": roomInfo.turn
-          }
-        )};
-      console.log(voteDone.isVoting)
-      console.log("関数が呼ばれている")
-      return fetch(`http://localhost:8000/room/${roomInfo.id}/vote/${roomInfo.turn}`, requestOptions)
-      // .then(response => response.json())
-      // .then(res => {
-      //   console.log(res)
-      //   setVoteDone({...voteDone, isVoting: false})
-      //   return new Promise((resolve, rejected) => {
-      //     console.log("POST実行")
-      //     if(res) {
-      //       resolve("POST成功")
-      //     } else {
-      //       rejected("POST実行でエラー")
-      //     }
-      //   })
-      // })
-  }
+  // console.log(restTime)
+  // const voteResting = async (time) => {
+  //     console.log(time)
+  //     const requestOptions = {
+  //       method: 'POST',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify(
+  //         {
+  //           "time": String(time),
+  //           "room_id": roomInfo.id,
+  //           "rest_flag": true,
+  //           "turn": roomInfo.turn
+  //         }
+  //       )};
+  //     console.log(voteDone.isVoting)
+  //     console.log("関数が呼ばれている")
+  //     return fetch(`http://localhost:8000/room/${roomInfo.id}/vote/${roomInfo.turn}`, requestOptions)
+  //     // .then(response => response.json())
+  //     // .then(res => {
+  //     //   console.log(res)
+  //     //   setVoteDone({...voteDone, isVoting: false})
+  //     //   return new Promise((resolve, rejected) => {
+  //     //     console.log("POST実行")
+  //     //     if(res) {
+  //     //       resolve("POST成功")
+  //     //     } else {
+  //     //       rejected("POST実行でエラー")
+  //     //     }
+  //     //   })
+  //     // })
+  // }
   
   const oneMinHandler = () =>{
     console.log("クリックされた")
@@ -210,7 +219,7 @@ const Home  = () => {
     </div>
 </div>
 }
-{true && <Modal color="deeppink" title="Vote Result">
+{voteDone.isResult && <Modal color="deeppink" title="Vote Result">
   <div style={{display:"flex", justifyContent:"space-evenly"}}>
 <div className={false ? "needRest": "needRest_off"} >
  <Image src="/study.png" width="200px" height="200px"/>
@@ -221,6 +230,9 @@ const Home  = () => {
  <h1 className="rest_yes">Yes</h1>
  </div>
   </div>
+  <button className="btn blue timerBtn" style={{backgroundColor: "red"}} onClick={() => restTimerHandler(3)}>
+    Start
+  </button>
   <p className="resultMin_title">Vote min</p>
   <Shuffle style= {{marginLeft:"10%"}}/>
   <p className="resultMin_title">Result min</p>
@@ -238,6 +250,9 @@ const Home  = () => {
         <span>3</span>
       </h1>
   </Modal>}
+  {
+    voteDone.isLoading && <Modal color="deeppink" title="結果を集計中・・"></Modal>
+  }
 <Notification/>
 {/* <h1 className={!isResting.isResting ? "demo right": "demo right light_off"}>
   <span>W</span>
@@ -258,7 +273,7 @@ const Home  = () => {
   <span>g</span>
 </h1> */}
 <CountDownTimer targetDate={targetTime}/>
-  <Timer onHelp ={submitHandler}  fetchVoteResting={voteResting} restTime={restTime}/>
+  <Timer onHelp ={submitHandler} />
 <RoomStatus userCount={count} timer={host.time} votingStatus={voteStatus} restTime={host.isResting}/>
 <div className="chatBtn" onClick={()=>{setChatOpen(!chatOpen)}}>
 <IoChatbubblesOutline  size="50px"/>

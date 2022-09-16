@@ -7,10 +7,14 @@ const useClock = (targetDate) => {
   );
   useEffect(() => {
   if(countDown <= 1000){
+    console.log(countDown)
     return () => { 
+      setCountDown(targetDate - new Date().getTime());
       return getReturnValues(0)}
   } else {
     const interval = setInterval(() => {
+      console.log("タイマー作動中")
+      console.log(countDown)
       setCountDown(targetDate - new Date().getTime());
     }, 1000);
 
