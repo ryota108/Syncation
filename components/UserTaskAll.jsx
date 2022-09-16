@@ -1,9 +1,11 @@
-import React,{useRef} from 'react'
+import React,{useRef,useState} from 'react'
 import UserTask from './UserTask';
 import { AiOutlinePlus } from "react-icons/ai";
 import { FaTasks } from "react-icons/fa";
 
 function UserTaskAll({checkable}) {
+
+  const [progress,setProgress] = useState()
 
   const DUMMY_TASK = [
     {name:"タスクのUIを作る",done:false,id:1},
@@ -33,6 +35,8 @@ const doneLength = DUMMY_TASK.filter((task)=>{
             </div>
    {DUMMY_TASK.map((task)=> {return (<UserTask name={task.name} id={task.id} key={task.id} done={task.done} checkable={checkable}/>)})}
   <h1 className='progressNotice'>{`${doneLength.length}/${taskLength}` }</h1>
+  <h1 className="progressTitle">How's it going?</h1>
+   <input type="range" className='progressInput'/>
     </div>
   )
 }

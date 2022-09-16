@@ -27,7 +27,8 @@ function Login() {
             "username": userRef.current.value,
             "status": "player",
             "room_id": roomRef.current.value,
-            "is_host": false
+            "is_host": false,
+            "progress": 0
         }        
       )};
 
