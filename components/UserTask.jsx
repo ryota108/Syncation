@@ -3,7 +3,7 @@ import styles from "../styles/UserTask.module.css";
 
 function UserTask({name,id,done,checkable}) {
 
- const [taskDone,setTaskDone] = useState(false)
+ const [taskDone,setTaskDone] = useState(done)
    
   const taskDoneHandler = () =>{
     setTaskDone(prev => !prev )
@@ -13,7 +13,7 @@ function UserTask({name,id,done,checkable}) {
     <>
     <div className={styles.taskContainer}>
       <p className={taskDone ? styles.taskTitleDone : styles.taskTitle}>{name}</p>
-      <input type="checkbox" className={styles.checkBox} onClick={taskDoneHandler}/>
+      <input type="checkbox" value={done} className={styles.checkBox} onClick={taskDoneHandler}/>
       <p>{done}</p>
     </div>
     </>

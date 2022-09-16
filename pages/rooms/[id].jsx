@@ -210,7 +210,7 @@ const Home  = () => {
     </div>
 </div>
 }
-{false && <Modal color="deeppink" title="Vote Result">
+{true && <Modal color="deeppink" title="Vote Result">
   <div style={{display:"flex", justifyContent:"space-evenly"}}>
 <div className={false ? "needRest": "needRest_off"} >
  <Image src="/study.png" width="200px" height="200px"/>
@@ -221,8 +221,22 @@ const Home  = () => {
  <h1 className="rest_yes">Yes</h1>
  </div>
   </div>
-  <p className="resultMin_title">Result min</p>
+  <p className="resultMin_title">Vote min</p>
   <Shuffle style= {{marginLeft:"10%"}}/>
+  <p className="resultMin_title">Result min</p>
+  <p className="voteResultMin">min</p>
+  <h1 className="test">
+        <span>？</span>
+        <span>5</span>
+        <span>5</span>
+        <span>3</span>
+        <span>5</span>
+        <span>5</span>
+        <span>3</span>
+        <span>5</span>
+        <span>5</span>
+        <span>3</span>
+      </h1>
   </Modal>}
 <Notification/>
 {/* <h1 className={!isResting.isResting ? "demo right": "demo right light_off"}>

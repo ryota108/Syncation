@@ -1184,3 +1184,71 @@ transition: 0.5s;
   text-align: center;
   text-shadow: 0px 0px 20px greenyellow;
 }
+
+.voteResultMin {
+  color: white;
+  font-size: 2rem;
+  text-align: center;
+}
+.voteResultMin > span {
+  font-size: 4rem;
+  padding: 10px;
+}
+
+.test {
+  color: white;
+  justify-content: center;
+}
+
+.test {
+  font-size: 3rem;
+  position: relative;
+  top: -85px;
+  left: 420px;
+  margin: 0;
+  padding: 0;
+  height: 50px;
+  overflow: hidden;
+  /* opacity: 0; */
+}
+.test > span{
+  display: flex;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  align-items: center;
+  animation: shuffle steps(10) 2s 1;
+  animation-delay: 7s;
+  animation-fill-mode: forwards;
+}
+@keyframes shuffle {
+  0% {
+    transform: translateY(0px);
+  }
+  100% {
+    transform: translateY(-450px);
+  }
+}
+
+.progressTitle {
+  color: #55e56d;
+  text-shadow: 0px 0xp 20px #55e56d;
+  text-align: center;
+}
+
+.progressInput {
+  width: 70%;
+  margin: auto;
+  appearance: none;
+  outline: none;
+  border: 2px solid #55e56d;
+  background-color: black;
+  border-radius: 10px;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; 
+  background:lightgreen; 
+  width: 15px; 
+  height: 15px; 
+  border-radius: 50%; 
+}
