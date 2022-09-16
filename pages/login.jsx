@@ -36,6 +36,7 @@ function Login() {
       .then(response => response.json())
       .then(res => { 
         console.log(res)
+        setUser({id: res.id, isHost: false})
       })
       .catch(err => console.log(err))
 

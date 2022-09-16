@@ -2,7 +2,7 @@ import { type } from 'os';
 import React,{useState,useEffect, useContext} from 'react';
 import classes from "./Timer.module.css";
 import { useRecoilValue,useSetRecoilState, useRecoilState } from "recoil";
-import {hostState, initialState, isRestingState, roomState,isVotingState, voteMinState, voteResultState} from "../recoil/atom"
+import {hostState, initialState, isRestingState, roomState,isVotingState, voteMinState, userListState, userState} from "../recoil/atom"
 import { SocketContext } from '../context/SocketProvider';
 import { timeHandler } from './helper/timeHelper';
 
@@ -21,6 +21,9 @@ function Timer({onHelp, fetchVoteResting}) {
   const setRoomInfo = useSetRecoilState(roomState)
   const socket = useContext(SocketContext)
   const [voteDone,setVoteDone] = useRecoilState(isVotingState)
+  // const [users, setUsers] = useRecoilState(userListState)
+  const [user, setUser] = useRecoilState(userState)
+  console.log(user)
   // const [isVoteResult, setIsVoteResult] = useRecoilState(voteResultState)
   
   // const timeHandler = (time) => {
@@ -248,10 +251,13 @@ useEffect(() => {
   
   return (
     <>
-    <div className="btn blue timerBtn" onClick={clickHandler}>
+    {
+      user.isHost && (
+      <div className="btn blue timerBtn" onClick={clickHandler}>
             <p>Start</p>
-          </div>
-          </>
+      </div> )
+    }
+    </>
   /* <button onClick={clickHandler}>Start</button> */
   )
 }

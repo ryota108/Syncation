@@ -1,5 +1,5 @@
 import React, { useRef, useState, useContext } from "react";
-import { hostState, userListState, taskState, roomState } from "../recoil/atom";
+import { hostState, userListState, taskState, roomState, userState } from "../recoil/atom";
 import Router from "next/router";
 import { useRecoilValue, useSetRecoilState, useRecoilState } from "recoil";
 import { MdHowToVote } from "react-icons/md";
@@ -14,8 +14,7 @@ import TaskAll from "../components/TaskAll";
 
 
 function LaunchRoom() {
-  const host = useRecoilValue(hostState);
-  const setHost = useSetRecoilState(hostState);
+  const [user, setUser] = useRecoilState(userState)
   const users = useRecoilValue(userListState)
   const setUsers = useSetRecoilState(userListState)
   const hostNameRef = useRef(null);
@@ -64,7 +63,7 @@ function LaunchRoom() {
     .then(res => { 
       console.log(res)
       setRoomInfo({...roomInfo, id:res.room_id, restTime: restTime})
-
+      setUser({id: res.id, isHost: true})
        /* ソケット通信によるルーム別の参加 */
 
        socket.emit("join_room", {

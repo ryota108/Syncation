@@ -34,7 +34,7 @@ const Home  = () => {
   const [roomInfo,setRoomInfo] = useRecoilState(roomState);
   const [voteDone,setVoteDone] = useRecoilState(isVotingState);
 
-  const user = useRecoilValue(userState)
+  const [user, setUser] = useRecoilState(userState)
   const users = useRecoilValue(userListState)
   const setUsers = useSetRecoilState(userListState)
   const host  = useRecoilValue(hostState)
@@ -86,7 +86,9 @@ const Home  = () => {
         username: user.User.username, 
         status: user.User.status,
         is_host: user.User.is_host,
-        room_id: user.User.room_id
+        room_id: user.User.room_id,
+        id: user.User.id,
+        progress: user.User.progress
         }
       })
       setUsers([...newUsers])
@@ -107,7 +109,9 @@ const Home  = () => {
           username: user.User.username, 
           status: user.User.status,
           is_host: user.User.is_host,
-          room_id: user.User.room_id
+          room_id: user.User.room_id,
+          id: user.User.id,
+          progress: user.User.progress
           }
         })
         setUsers([...newUsers])

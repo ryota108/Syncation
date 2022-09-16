@@ -15,7 +15,8 @@ import {atom} from "recoil"
 
 export const userState = atom({
   key: 'userState',
-  default: [{id:1,userName:"TEST",progress:0}]})
+  default: {}
+})
 
   export const hostState = atom({
     key: 'hostState',
@@ -59,11 +60,6 @@ export const userState = atom({
     key: "voteMinState",
     default: 3
   })
-
-  // export const voteResultState = atom({
-  //   key: "voteResultState",
-  //   default: { isResult: false, isLoading: false }
-  // })
 
 
   export const roomState = atom({
